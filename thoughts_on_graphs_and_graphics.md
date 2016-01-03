@@ -1,7 +1,20 @@
 ## thoughts on graph and data visualization
 
+This markdown document is my long-deferred attempt to put down on paper some principles I think are useful when creating graphics. In my experience, scientists rarely put much effort into trying to understand what they're doing when they graph something, why they're doing it, how they con do it the best, and what their goal is in graphing something.
 
 In this document I will describe best practices for graphs and why I think they are the best practices (data whether certain practices actually are better is thin though). Ideally, I'll include a bunch of example graphs here to illustrate good and bad practices.
+
+This whole exercise is pointless, however, unless we identify what exactly it is we're trying to do. We thus ask ourselves:
+
+### What _is_ a good graphic? What should a graphic do?
+
+Your answer my deviate from mine, but to me a good graphic does two things:
+* honestly shows the data
+* makes it easy for the reader to understand some point you want to make
+
+I think that in some instances, especially in cases where there is a ton a data, just hitting the first of these bullet points can be an accomplishment. But a good graphic show go deeper and actually help the reader understand the point you're trying to communicate.
+
+Many graphs do the opposite: they show you some relationship without showing you the data. Also see the Anscombe's quartet example below for why this is dangerous.
 
 ## motivation: why graphs and graphics are essential
 

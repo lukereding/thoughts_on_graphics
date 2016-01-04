@@ -44,5 +44,19 @@ Below I outline guiding principles I think are important when creating a graphic
 * don't extrapolate
 * use color thoughtfully. Or just use viridis. Why? (a) It's perceptually uniform. (b) It looks good. (c) It works just as well printed in black and white. (d) It's accessible to people with the most common forms of colorblindness. (e) It works for representing categories or for representing a quantitative variable. (f) You'll never need to justify your color scheme ever again. Note that this is also true of the other colormaps provided in the viridis package (plasma, magma, and inferno), but they don't look as nice.
 
+An additional thought that really doesn't fit in here really well is that you should try to design figures so that they don't require captions. If you're using a lot of jargon and acronymns and representing things in a non-intuitive way, your reader has to head to the legend to even start to comprehend what's going on. Trying to tell a story with a graphic should obviate the need for a stuffed legend.
+
+### some critiques / thoughts about graphics
+
+from doi 10.1098/rspb.2015.2097
+![doi 10.1098/rspb.2015.2097](./graphs/10.1098:rspb.2015.2097.png)
+
+This graph uses color well; when printed in black and white, the reader will be able to identify the different colors. The overlap of the points and the error bars are annoying and difficult to read though. This graph also doesn't show the data, which could be done using a package like `beeswarm` in R or using simple line plots. The graph could also be improved by emphasizing the connect between the colored points at transfer 20 and 100 by replacing the two points for a single color with a single line that would connect the two former points.
+
+from doi 10.1098/rspb.2015.2097.png
+![doi 10.1098/rspb.2015.2097](./graphs/10.1098:rspb.2015.2097.png)
+
+This graph does a really nice job of actually showing the data: each line represents the data from a single individual co-infected with some parasites. The thicker black line is nice because it provides a summary of the data from all the grey lines, and the reader can guess what it represents without having to read through the figure legend. Color is used nicely here--the two different colors are used to highlight single infections of two different parasites. Red and blue are ideal colors for this in that they are clear and can be read by people wit color blindness.
+
 
 ### useful papers / sites

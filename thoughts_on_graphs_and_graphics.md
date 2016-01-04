@@ -49,7 +49,7 @@ An additional thought that really doesn't fit in here really well is that you sh
 ### some critiques / thoughts about graphics
 
 from doi 10.1098/rspb.2015.2097
-![doi 10.1098/rspb.2015.2097](./graphs/10.1098:rspb.2015.1932)
+![doi 10.1098/rspb.2015.2097](./graphs/10.1098:rspb.2015.1932.png)
 
 This graph uses color well; when printed in black and white, the reader will be able to identify the different colors. The overlap of the points and the error bars are annoying and difficult to read though. This graph also doesn't show the data, which could be done using a package like `beeswarm` in R or using simple line plots. The graph could also be improved by emphasizing the connect between the colored points at transfer 20 and 100 by replacing the two points for a single color with a single line that would connect the two former points.
 

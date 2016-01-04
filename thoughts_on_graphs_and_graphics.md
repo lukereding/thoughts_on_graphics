@@ -1,30 +1,30 @@
 ## thoughts on graph and data visualization
 
-This markdown document is my long-deferred attempt to put down on paper some principles I think are useful when creating graphics. In my experience, scientists rarely put much effort into trying to understand what they're doing when they graph something, why they're doing it, how they con do it the best, and what their goal is in graphing something.
+This markdown document is my long-deferred attempt to put down on paper some principles I think are useful when creating graphics. In my experience, scientists rarely put much effort into trying to understand what they're doing when they graph something, why they're doing it, how they con do it the best, and what their goal is in creating a visual representation of data.
 
-In this document I will describe best practices for graphs and why I think they are the best practices (data whether certain practices actually are better is thin though). Ideally, I'll include a bunch of example graphs here to illustrate good and bad practices.
+In this document I will describe best practices for graphs and why I think they are the best practices (data on whether certain practices actually are better is thin though). Ideally, I'll include a bunch of example graphs here to illustrate good and bad practices.
 
-This whole exercise is pointless, however, unless we identify what exactly it is we're trying to do. We thus ask ourselves:
+This whole exercise is pointless, however, unless we identify what exactly it is we're trying to do:
 
 ### What _is_ a good graphic? What should a graphic do?
 
-Your answer my deviate from mine, but to me a good graphic does two things:
+Your answer may deviate from mine, but to me a good graphic does two things:
 * honestly shows the data
 * makes it easy for the reader to understand some point you want to make
 
-I think that in some instances, especially in cases where there is a ton a data, just hitting the first of these bullet points can be an accomplishment. But a good graphic show go deeper and actually help the reader understand the point you're trying to communicate.
+A graph is worthy of retention in a paper or a talk if it does one of these things really well. Otherwise, get rid of it. When possible--most of the time--graphics should aim to do both of these things really well. Why just show some relationship when you could actually show the data as well?
 
-Many graphs do the opposite: they show you some relationship without showing you the data. Also see the Anscombe's quartet example below for why this is dangerous.
+It's important to note that many graphs pass the second bullet point but deliberately ignore the first: they show you some relationship without showing you the data. Not only does this miss an upportunity to infuse your graphs with another dimension, but it a lot of cases it's dishonest. See the Anscombe's quartet example below for why this is dangerous.
 
 ## motivation: why graphs and graphics are essential
 
-Anscombe's quartet illustrates how our trust of numbers without validating our intuition using a graphic is problematic. This quartet is four x, y vectors. Each pair of vectors has the same summary statistics (mean of each vector, covariance between x and y, and regression slopes). Yet when these four pairs of points are graphs on four scatterplots, it's clear the data are quite different:
+Anscombe's quartet illustrates how our trust of numbers without validating our intuition using a graphic is problematic. This quartet comprises four x, y vectors. Each pair of vectors has the same summary statistics (mean x, mean of y, covariance between x and y, and regression slopes). Yet when these four pairs of points are graphs on four scatterplots, it's clear the data are quite different:
 
 ![quartet graph from wikipedia here](https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Anscombe's_quartet_3.svg/425px-Anscombe's_quartet_3.svg.png)
 
-By definition, summary statistics provide a simplified abstraction of our data, but the example above shows that we're lying to ourselves as scientists if make the common mistake of assuming summary statistics are adequate at describing our data.
+By definition, summary statistics provide a simplified abstraction of our data, but the example above shows that we're lying to ourselves as scientists if make the fallacious mistake of relying on summary statistics to describe our data.
 
-The image above also illustrates that often our data contains features we might not even be aware of: unknown unknowns that we simply haven't thought about or considered. For example, if I told you that two sets of data had the same means for x and y and covariances, you'd probably assume their scatterplots would look pretty similar. You probably wouldn't have even thought "I wonder if there are outliers that could cause this similarity?" or "Is it possible that the relationship between x and y could be different in this pair of data?"
+The image above also illustrates that our data often contains features we might not even be aware of: unknown unknowns that we simply haven't thought about or considered. For example, if I told you that two sets of data had the same means for x and y and covariances, you'd probably assume their scatterplots would look pretty similar. You probably wouldn't have even thought "I wonder if there are outliers that could cause this similarity?" or "Is it possible that the relationship between x and y could be different in this pair of data?"
 
 As Daniel Kahneman writes about in his book _Thinking Fast and Slow_, the humans mind tends to be lazy. Part of the power of graphics is that they take tap into the strong visual processing parts of our brains and force us not to be lazy when it comes to interpreting data.
 
@@ -35,7 +35,8 @@ This is why graphs are so powerful and so essential.
 Below I outline guiding principles I think are important when creating a graphic.
 
 * every part of the graph should have a clear purpose
-..* this is
+
+   Extra bells and whistles are distracting. Often when graphs contain a bunch of things that don't need to be there, I get stuck trying to figure out what they mean, only to realize minutes later that they don't mean anything. This is not to say that all parts of a graphic should have a _unique_ purpose: redundency is an important aspect of design and I often find it useful to use in graphs, as different people probably have different ideal ways of viewing something.
 * show the data, some summary of the data or parameter estimate of interest, and some measure of variability about that estimate
 * clearly label sample sizes
 * state some measure of effect size

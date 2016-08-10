@@ -42,7 +42,22 @@ Below I outline guiding principles I think are important when creating a graphic
 * state some measure of effect size
 * state the the test used to assess statistical significance and the resulting p-value
 * don't extrapolate
-* use color thoughtfully. Or just use viridis. Why? (a) It's perceptually uniform. (b) It looks good. (c) It works just as well printed in black and white. (d) It's accessible to people with the most common forms of colorblindness. (e) It works for representing categories or for representing a quantitative variable. (f) You'll never need to justify your color scheme ever again. Note that this is also true of the other colormaps provided in the viridis package (plasma, magma, and inferno), but they don't look as nice.
+
+### thoughts on color
+
+Color can be a powerful visualize element in a graphic. But it has to be used carefully and thoughtfully. 
+
+#### issues with color schemes
+
+There are three main issues that can plague a given color scheme:
+
+* Not distinguishable to readers with red/green colorblindness.
+* Luminance of the colors is the same, thus hard to distinguish between colors when printed in black and white.
+* For quantitative data: changes in luminance of the colors does not scale linearly with changes in the underlying variable the color represents. For example, a change in luminance from 10% black to 30% black should represent a comparable increase in the variable that is being represented. 
+
+#### recommendations
+
+It seems like there may be too many variables to optimize here, but it's possible to develop color schemes that satisfy all these criteria. One solution is the [viridis](https://bids.github.io/colormap/) color scheme and its sister color schemes (plasma, magma, and inferno). However, these may not be suitable for qualitative data and imply some sort of ordinal ranking. The [cube helix](http://blogs.nature.com/methagora/2013/07/data-visualization-points-of-view.html) color scheme is a good alternative because their are greater changes in hue. Both of these are implemented in R (using the viridis package and the cubeHelix function of the rje package). 
 
 An additional thought that really doesn't fit in here really well is that you should try to design figures so that they don't require captions. If you're using a lot of jargon and acronymns and representing things in a non-intuitive way, your reader has to head to the legend to even start to comprehend what's going on. Trying to tell a story with a graphic should obviate the need for a stuffed legend.
 
@@ -60,3 +75,4 @@ This graph does a really nice job of actually showing the data: each line repres
 
 
 ### useful papers / sites
+Nature methods has an awesome ongoing section about graphics: http://blogs.nature.com/methagora/2013/07/data-visualization-points-of-view.html lists them all.

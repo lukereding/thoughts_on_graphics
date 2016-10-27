@@ -36,7 +36,8 @@ Below I outline guiding principles I think are important when creating a graphic
 
 * every part of the graph should have a clear purpose
 
-   Extra bells and whistles are distracting. Often when graphs contain a bunch of things that don't need to be there, I get stuck trying to figure out what they mean, only to realize minutes later that they don't mean anything. This is not to say that all parts of a graphic should have a _unique_ purpose: redundency is an important aspect of design and I often find it useful to use in graphs, as different people probably have different ideal ways of viewing something.
+   Extra bells and whistles are distracting. Often when graphs contain a bunch of things that don't need to be there, I get stuck trying to figure out what they mean, only to realize minutes later that they don't mean anything. This is not to say that all parts of a graphic should have a _unique_ purpose: redundency is an important aspect of design and I often find it useful to use in graphs, as different people probably have different ideal ways of viewing something. But if some element of our graphic isn’t serving a clear purpose, strip it away.
+   
 * show the data, some summary of the data or parameter estimate of interest, and some measure of variability about that estimate
 * clearly label sample sizes
 * state some measure of effect size
@@ -63,16 +64,35 @@ An additional thought that really doesn't fit in here really well is that you sh
 
 ### some critiques / thoughts about graphics
 
-from doi 10.1098/rspb.2015.2097
+- from doi 10.1098/rspb.2015.2097
 ![doi 10.1098/rspb.2015.2097](./graphs/10.1098:rspb.2015.1932.png)
 
 This graph uses color well; when printed in black and white, the reader will be able to identify the different colors. The overlap of the points and the error bars are annoying and difficult to read though. This graph also doesn't show the data, which could be done using a package like `beeswarm` in R or using simple line plots. The graph could also be improved by emphasizing the connect between the colored points at transfer 20 and 100 by replacing the two points for a single color with a single line that would connect the two former points.
 
-from doi 10.1098/rspb.2015.2097.png
+- from doi 10.1098/rspb.2015.2097.png
 ![doi 10.1098/rspb.2015.2097](./graphs/10.1098:rspb.2015.2097.png)
 
-This graph does a really nice job of actually showing the data: each line represents the data from a single individual co-infected with some parasites. The thicker black line is nice because it provides a summary of the data from all the grey lines, and the reader can guess what it represents without having to read through the figure legend. Color is used nicely here--the two different colors are used to highlight single infections of two different parasites. Red and blue are ideal colors for this in that they are clear and can be read by people wit color blindness.
+This graph does a really nice job of actually showing the data: each line represents the data from a single individual co-infected with some parasites. The thicker black line is nice because it provides a summary of the data from all the grey lines, and the reader can guess what it represents without having to read through the figure legend. Color is used nicely here--the two different colors are used to highlight single infections of two different parasites. Red and blue are ideal colors for this in that they are clear and can be read by people with color blindness.
 
+- from 10.1371/journal.pbio.1002564
+![doi 10.1098/rspb.2015.2097](./graphs/bee_plot.png)
+
+This is cool paper for several reasons, so imagine my disappointment when I got their final plot, shown above. There’s a lot of good things about this graph. The color scheme is pleasing, works for people with color-blindness, and works when printed out in black and white. The font is large enough the read easily. And a stacked bar plot is a great way to show this data.
+
+The problem comes when the reader tries to make sense of the different colors. I started at the top: what does the yellow represent? Look to the legend: _RPa_. What’s that? Look to Table 1: _Rewarded pulling alone_. Okay. Back to the figure. Interpret. Repeat for each of the colors.
+
+Let’s review what I had to do just to understand 1/11th of the graph: 
+(1) Map a color to the behavior code using the legend.
+(2) Map the behavior code to the actual behavior.
+(3) Map the behavior back to the color in the graphic. 
+
+Why is this poor design? It places too much of a burden on the reader. It requires an unnecessary number of steps to make sense of what the figure is actually showing. This is the sort of approach someone would take to intentionally obfuscate. Additionally, even if the authors preserved this scheme, the reader’s insights could be hastened by letting the reader know (e.g. with an arrow and annotation by the legend) that there is a biologically useful ordering to the colors: lighter colors represent more learning to pull the string in this experiment.
+
+————
+
+This is one example of lots of graphs that make use complex legends. They don’t have to. There are alternatives.
+
+All my criticisms and the three steps traced out above could be demolished simply by labeling the colors with the full names of the behavior directly on the graph. The reader’s eyes could stay on the graph instead of roaming from the graph to the legend to the table back to the graph. Notably, there are several packages in R to facilitate the labeling of points / groups in graphs automatically: [ggrepel](https://cran.r-project.org/web/packages/ggrepel/vignettes/ggrepel.html) is one and [directlabels](https://github.com/tdhock/directlabels) is another.
 
 ### useful papers / sites
 Nature methods has an awesome ongoing section about graphics: http://blogs.nature.com/methagora/2013/07/data-visualization-points-of-view.html lists them all.

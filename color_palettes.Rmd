@@ -1,6 +1,10 @@
 ---
-title: "R Notebook"
-output: html_notebook
+title: "color palettes"
+output: 
+  html_notebook: 
+    highlight: tango
+    theme: readable
+    toc: yes
 ---
 
 

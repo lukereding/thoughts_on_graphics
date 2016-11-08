@@ -254,8 +254,30 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ylab("average number of home runs") +
     scale_fill_zis(guide = F)
   
+  h <- batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    ggtitle("ptol") +
+    xlab("league") +
+    ylab("average number of home runs") +
+    ggthemes::scale_fill_ptol(guide = F)
   
-  cowplot::plot_grid(a,b,c,d,e,f,g, labels = c("a", "b", "c", "d", "e", "f","g"))
+  j <- batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    ggtitle("colorblind") +
+    xlab("league") +
+    ylab("average number of home runs") +
+    ggthemes::scale_fill_colorblind(guide = F)
+  
+  
+  cowplot::plot_grid(a,b,c,d,e,f,g,h,j, labels = c("a", "b", "c", "d", "e", "f","g", "h", "j"))
   
   
 }

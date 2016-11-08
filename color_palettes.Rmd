@@ -1,0 +1,311 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+This is an attempt to keep track of my revolving and confused ideas about using color in plots.
+
+I'm using this as a testing ground and someplace I can go to compare different color palettes for different plotting purposes. When I find color palettes I like that aren't implemented in R, I'll write ggplot `scale` functions and save them here.
+
+
+
+Load in packages: 
+
+```{r}
+require(tidyverse)
+require(viridis)
+require(RColorBrewer)
+
+```
+
+
+## some colors schemes
+
+### quantitative
+
+```{r}
+
+# red / orange / yellow
+display.brewer.pal(name = "YlOrRd", n=10)
+
+# yellow / green / blue
+display.brewer.pal(name = "YlGnBu", n=10)
+
+# viridis
+ggthemr::colour_plot(viridis(10))
+
+# magma
+ggthemr::colour_plot(magma(10))
+
+
+```
+
+
+### qualitative
+
+```{r}
+
+# base colors
+palette_base <- function(n, random_order = FALSE) {
+  cols <- c("#ac4142",
+            "#d28445",
+            "#f4bf75",
+            "#90a959",
+            "#75b5aa",
+            "#6a9fb5",
+            "#aa759f",
+            "#8f5536",
+            "black")
+  cols <- cols[c(1,6,5,2,7,4,8,3)]
+  
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  
+  cols[1:n]
+  
+}
+scale_color_base<- function(...) discrete_scale("colour", "base", palette_base, ...)
+scale_fill_base <- function(...) discrete_scale("fill", "base", palette_base, ...)
+
+
+cols <- c("#ac4142",
+          "#d28445",
+          "#f4bf75",
+          "#90a959",
+          "#75b5aa",
+          "#6a9fb5",
+          "#aa759f",
+          "#8f5536",
+          "black")
+cols <- cols[c(1,6,5,2,7,4,8,3)]
+
+ggthemr::colour_plot(cols)
+
+
+
+
+palette_charted <- function(n, random_order = FALSE) {
+  cols2 <- c('#6DCC73', '#1D7775', '#4FCFD5', '#FCE651', '#FF7050', '#FFC050', '#999999')
+  cols2 <- cols2[c(1,2,3,5,6,7,4)]
+  
+  if (isTRUE(random_order))
+    cols2 <- sample(cols2)
+  
+  if (length(cols2) < n)
+    cols2 <- rep(cols2, length.out = n)
+  
+  cols2[1:n]
+  
+}
+scale_color_charted<- function(...) discrete_scale("colour", "charted", palette_charted, ...)
+scale_fill_charted <- function(...) discrete_scale("fill", "charted", palette_charted, ...)
+
+
+
+cols2 <- c('#6DCC73', '#1D7775', '#4FCFD5', '#FCE651', '#FF7050', '#FFC050', '#999999')
+cols2 <- cols2[c(1,2,3,5,6,7,4)]
+ggthemr::colour_plot(cols2)
+
+
+wes_palette("Rushmore", 5)
+palette_rushmore <- function(n, random_order = FALSE) {
+  cols <- c("#E1BD6D", "#EABE94", "#0B775E", "#35274A", "#F2300F")
+  cols <- cols[c(3,4,5,1,2)]
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_rushmore<- function(...) discrete_scale("colour", "rushmore", palette_rushmore, ...)
+scale_fill_rushmore <- function(...) discrete_scale("fill", "rushmore", palette_rushmore, ...)
+
+
+wes_palette("Zissou", 5)
+
+palette_zissou <- function(n, random_order = FALSE) {
+  cols <- c("#3B9AB2" ,"#78B7C5" ,"#EBCC2A" ,"#E1AF00", "#F21A00")
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_zis<- function(...) discrete_scale("colour", "zissou", palette_zissou, ...)
+scale_fill_zis <- function(...) discrete_scale("fill", "zissou", palette_zissou, ...)
+
+
+
+wes_palette("Darjeeling", 5)
+palette_darjeeling <- function(n, random_order = FALSE) {
+  cols <- c("#FF0000" ,"#00A08A" ,"#F2AD00" ,"#F98400", "#5BBCD6")
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_dar<- function(...) discrete_scale("colour", "darjeeling", palette_darjeeling, ...)
+scale_fill_dar <- function(...) discrete_scale("fill", "darjeeling", palette_darjeeling, ...)
+
+
+
+
+
+```
+
+
+
+
+# colors in action
+
+What I'm showing doesn't really matter--the goal is look at how the colors work together (or don't).
+
+### quantitative
+
+```{r fig.height=8, fig.width=8}
+if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
+ 
+  batting <- tbl_df(Batting)
+  
+  a <- batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    scale_fill_base(guide = F) +
+    ggtitle("base") +
+    xlab("league") +
+    ylab("average number of home runs")
+  
+
+  b<- batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    ggtitle("charted") +
+    xlab("league") +
+    ylab("average number of home runs") +
+    scale_fill_charted(guide= F)
+  
+  c<-batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    ggtitle("paired") +
+    xlab("league") +
+    ylab("average number of home runs") +
+    scale_fill_brewer(palette = "Paired", guide = F)
+  
+  d<-batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    ggtitle("dark2") +
+    xlab("league") +
+    ylab("average number of home runs") +
+    scale_fill_brewer(palette = "Dark2", guide = F)
+  
+  e <- batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    ggtitle("rushmore") +
+    xlab("league") +
+    ylab("average number of home runs") +
+    scale_fill_rushmore(guide = F)
+  
+  f <- batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    ggtitle("dar") +
+    xlab("league") +
+    ylab("average number of home runs") +
+    scale_fill_dar(guide = F)
+  
+  g <- batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    ggtitle("zis") +
+    xlab("league") +
+    ylab("average number of home runs") +
+    scale_fill_zis(guide = F)
+  
+  
+  cowplot::plot_grid(a,b,c,d,e,f,g, labels = c("a", "b", "c", "d", "e", "f","g"))
+  
+  
+}
+
+```
+
+### qualitative
+
+```{r fig.height=8, fig.width=8}
+
+
+if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
+  set.seed(11)
+  a <- batting %>% 
+    sample_n(1000) %>%
+    ggplot(aes(SB, HR)) +
+    geom_point(aes(color = H)) +
+    theme_minimal() +
+    scale_color_viridis() +
+    ggtitle("viridis")
+  
+  set.seed(11)
+  b <- batting %>% 
+    sample_n(1000) %>%
+    ggplot(aes(SB, HR)) +
+    geom_point(aes(color = H)) +
+    theme_minimal() +
+    scale_color_viridis(option = "magma") +
+    ggtitle("magma")
+  
+  set.seed(11)
+  c <- batting %>% 
+    sample_n(1000) %>%
+    ggplot(aes(SB, HR)) +
+    geom_point(aes(color = H)) +
+    theme_minimal() +
+    scale_color_distiller(palette = "YlOrRd") +
+    ggtitle("YlOrRd")
+    
+  set.seed(11)
+  d<-batting %>% 
+    sample_n(1000) %>%
+    ggplot(aes(SB, HR)) +
+    geom_point(aes(color = H)) +
+    theme_minimal() +
+    scale_color_distiller(palette = "YlGnBu") +
+    ggtitle("YlGnBu")
+  
+  cowplot::plot_grid(a,b,c,d, labels = c("a", "b", "c", "d"))
+   
+}
+
+
+```
+
+
+

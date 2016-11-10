@@ -157,6 +157,17 @@ scale_color_dar<- function(...) discrete_scale("colour", "darjeeling", palette_d
 scale_fill_dar <- function(...) discrete_scale("fill", "darjeeling", palette_darjeeling, ...)
 
 
+palette_world <- function(n, random_order = FALSE) {
+  cols <- c("#e39d25", "#d16050","#5cb3e7","#4676b1","#818b98","#4c4c4c")
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_world <- function(...) discrete_scale("colour", "world", palette_world, ...)
+scale_fill_world <- function(...) discrete_scale("fill", "world", palette_world, ...)
+
 
 
 
@@ -194,10 +205,10 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggplot(aes(lgID, average_hr)) +
     geom_bar(stat = "identity", aes(fill = lgID)) +
     theme_minimal() +
-    ggtitle("charted") +
+    ggtitle("world") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_charted(guide= F)
+    scale_fill_world(guide = F)
   
   c<-batting %>%
     group_by(lgID) %>%

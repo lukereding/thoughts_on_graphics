@@ -71,7 +71,7 @@ Let’s take a table (that somehow appeared in a _figure_ of a paper) and make i
 Below includes are R code to recreate these figures.
 
 #### step 1
-```
+```r
 require(tidyverse)
 require(ggthemes)
 require(directlabels)
@@ -200,7 +200,7 @@ Problems:
 
 #### step 2
 
-```
+```r
 step_2 <- fig1e %>%
   ggplot(aes(x=day, y = velocity, color = genotype, shape = genotype)) +
   geom_point() +
@@ -220,7 +220,7 @@ The grid is gone and the layout is very simple, highlighting the data. Different
 
 #### step 3
 
-```
+```r
 step_3 <- fig1e %>%
   ggplot(aes(x=day, y = velocity, color = genotype, shape = genotype)) +
   scale_color_world(guide = F) +
@@ -240,7 +240,7 @@ We’ve replaced the defaults with some nicer colors that can be distinguished f
 
 #### step 4
 
-```
+```r
 fig1e %>%
   ggplot(aes(x=day, y = velocity, color = genotype, shape = genotype)) +
   scale_color_world(guide = F) +

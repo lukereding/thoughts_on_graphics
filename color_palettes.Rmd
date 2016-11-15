@@ -20,6 +20,7 @@ Load in packages:
 require(tidyverse)
 require(viridis)
 require(RColorBrewer)
+require(wesanderson)
 
 ```
 
@@ -159,6 +160,7 @@ scale_fill_dar <- function(...) discrete_scale("fill", "darjeeling", palette_dar
 
 palette_world <- function(n, random_order = FALSE) {
   cols <- c("#e39d25", "#d16050","#5cb3e7","#4676b1","#818b98","#4c4c4c")
+  cols <- cols[c(3,4,1,2,5,6)]
   if (isTRUE(random_order))
     cols <- sample(cols)
   if (length(cols) < n)

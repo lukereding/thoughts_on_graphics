@@ -62,6 +62,214 @@ It seems like there may be too many variables to optimize here, but it's possibl
 
 An additional thought that really doesn't fit in here really well is that you should try to design figures so that they don't require captions. If you're using a lot of jargon and acronymns and representing things in a non-intuitive way, your reader has to head to the legend to even start to comprehend what's going on. Trying to tell a story with a graphic should obviate the need for a stuffed legend.
 
+### worked examples
+
+Let’s take a table (that somehow appeared in a _figure_ of a paper) and make it into a nice plot. Here’s the original table (paper doi 10.1016/j.bbi.2007.12.008):
+
+![doi 10.1016](./graphs/table.png)
+
+Below includes are R code to recreate these figures.
+
+#### step 1
+```
+require(tidyverse)
+require(ggthemes)
+require(directlabels)
+require(cowplot)
+require(magrittr)
+
+theme_clean <- function(font_size = 14, font_family = "", line_size = .5, rotate_labels = F) {
+  half_line <- 9
+  small_rel <- 0.857
+  small_size <- small_rel * font_size
+  
+  theme_grey(base_size = font_size, base_family = font_family) %+replace%
+    theme(
+      rect              = element_rect(fill = "transparent", colour = NA, color = NA, size = 0, linetype = 0),
+      text              = element_text(family = font_family, face = "plain", colour = "black",
+                                       size = font_size, hjust = 0.5, vjust = 0.5, angle = 0, lineheight = .9,
+                                       margin = ggplot2::margin(), debug = FALSE),
+      axis.text         = element_text(colour = "black", size = small_size),
+      #axis.title        = element_text(face = "bold"),
+      axis.text.x       = element_text(margin = ggplot2::margin(t = small_size / 4), vjust = 1),
+      axis.text.y       = element_text(margin = ggplot2::margin(r = small_size / 4), hjust = 1),
+      axis.title.x      = element_text(
+        margin = ggplot2::margin(t = small_size / 2, b = small_size / 4)
+      ),
+      axis.title.y      = element_text(
+        angle = 90,
+        margin = ggplot2::margin(r = small_size / 2, l = small_size / 4),
+      ),
+      axis.ticks        = element_line(colour = "black", size = line_size),
+      axis.line = element_blank(), 
+      legend.key        = element_blank(),
+      legend.spacing     = grid::unit(0.1, "cm"),
+      legend.key.size   = grid::unit(1, "lines"),
+      legend.text       = element_text(size = rel(small_rel)),
+      #    legend.position   = c(-0.03, 1.05),
+      # legend.justification = c("left", "right"),
+      panel.background  = element_blank(),
+      panel.border      = element_blank(),
+      panel.grid.major  = element_blank(),
+      panel.grid.minor  = element_blank(),
+      strip.text        = element_text(size = rel(small_rel)),
+      strip.background  = element_blank(),
+      plot.background   = element_blank(),
+      plot.title        = element_text(size = font_size*1.2,
+                                       hjust = 0)
+    )
+}
+
+
+
+palette_world <- function(n, random_order = FALSE) {
+  cols <- c("#e39d25", "#d16050","#5cb3e7","#4676b1","#818b98","#4c4c4c")
+  # cols <- cols[c(3,4,1,2,5,6)]
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_world <- function(...) discrete_scale("colour", "world", palette_world, ...)
+scale_fill_world <- function(...) discrete_scale("fill", "world", palette_world, ...)
+
+
+
+fig1e <- tribble(
+  ~day, ~genotype, ~velocity
+  "1", "wt", "15.4",
+  "2", "wt", "15.1",
+  "3", "wt", "12.7",
+  "4", "wt", "12.5",
+  "5", "wt", "10.6",
+  "6", "wt", "12.8",
+  "7", "wt", "12.6",
+  "8", "wt", "14.3",
+  "1", "scid", "15.3",
+  "2", "scid", "15.5",
+  "3", "scid", "14.3",
+  "4", "scid", "10.5",
+  "5", "scid", "10.4",
+  "6", "scid", "12.8",
+  "7", "scid", "14.2",
+ "8", "scid", "15.1"
+)
+
+
+day <- rep(1:8,2)
+genotype = rep(c("wt","scid"), each = 8)
+velocity <- c(
+  15.4,
+  15.1,
+  12.7,
+  12.5,
+  10.6,
+  12.8,
+  12.6,
+  14.3,
+  15.3,
+  15.5,
+  14.3,
+  10.5,
+  10.4,
+  12.8,
+  14.2,
+  15.1
+)
+
+fig1e <- tibble(day = day, genotype = genotype, velocity = velocity)
+
+step_1 <- fig1e %>%
+  ggplot(aes(x=day, y = velocity, group =genotype)) +
+  geom_point() +
+  geom_line(aes(linetype = genotype)) +
+  theme_base()
+```
+
+
+![doi 10.1016](./graphs/step1.png)
+
+This is an okay graph. The different types of lines differentiate between the two genotypes of mice. This is the sort of default plot you might get in R.
+
+Problems:
+- the same plotting characters are used for both genotypes of mice
+- some of the points overlap
+- the box around the plot is distracting and not necessary
+- the legend is probably unnecessary
+
+#### step 2
+
+```
+step_2 <- fig1e %>%
+  ggplot(aes(x=day, y = velocity, color = genotype, shape = genotype)) +
+  geom_point() +
+  geom_line(aes(linetype = genotype)) +
+  theme_clean()
+
+```
+
+
+
+![doi 10.1016](./graphs/step2.png)
+
+The genotypes are now different colors, so the lines are redundantly coded (i.e. you can use the line type and the color to distinguish the two lines). Redundancy is an important design principle. Some people may pay more attention to colors, others to the line type. Using both means that you leave no one out. The colors are sort of weird, though, and are defaults, which means you can probably do better.
+
+The grid is gone and the layout is very simple, highlighting the data. Different plotting symbols now represent data from the two groups. But the points and lines are pretty small, we still have the legend, and the points overload.
+
+
+#### step 3
+
+```
+step_3 <- fig1e %>%
+  ggplot(aes(x=day, y = velocity, color = genotype, shape = genotype)) +
+  scale_color_world(guide = F) +
+  geom_point(size=3, position = position_dodge(width = 0.5)) +
+  geom_line(aes(linetype = genotype), size = 1, position = position_dodge(width = 0.5)) +
+  scale_linetype(guide = F) +
+  scale_shape(guide = F)+
+  theme_clean()+
+  geom_dl(label = genotype, method =list("angled.endpoints",  vjust = c(-0.5))) +
+  ggtitle("fig 1e") +
+  geom_dl(label = genotype, method =list("angled.endpoints",  vjust = c(-0.5)))
+```
+
+![doi 10.1016](./graphs/step3.png)
+
+We’ve replaced the defaults with some nicer colors that can be distinguished from each other when the graph is printed in black and white. The lines are bolder and clearer and appear to take up more of the plot. The points are no longer on top of each other. The legend is gone and we’ve simply labeled each line with the correct genotype of mouse.
+
+#### step 4
+
+```
+fig1e %>%
+  ggplot(aes(x=day, y = velocity, color = genotype, shape = genotype)) +
+  scale_color_world(guide = F) +
+  geom_point(size=3, position = position_dodge(width = 0.5)) +
+  geom_line(aes(linetype = genotype), size = 1, position = position_dodge(width = 0.5)) +
+  scale_linetype(guide = F) +
+  scale_shape(guide = F)+
+  theme_clean()+
+  geom_dl(label = genotype, method =list("angled.endpoints",  vjust = c(-0.5))) +
+  ggtitle("fig 1e") +
+  xlab("velocity (cm/s)") +
+  coord_cartesian(ylim= c(9.8, 16)) +
+  annotate("segment", x = 1, xend = 4.5, y = 10.2, yend=10.2) +
+  annotate("text", label = "aquisition", x = 2.5, y = 10.3) +
+  annotate("segment", x = 4.5, xend = 5.5, y = 10, yend=10) +
+  annotate("text", label = "probe", x = 5, y = 10.1) +
+  annotate("segment", x = 5.5, xend = 7.5, y = 10.2, yend=10.2) +
+  annotate("text", label = "reversal", x = 6.5, y = 10.3) +
+  annotate("segment", x = 7.5, xend = 8.5, y = 10, yend=10) +
+  annotate("text", label = "visible", x = 8, y = 10.1) 
+```
+
+
+
+![doi 10.1016](./graphs/final.png)
+
+Finally, we can improve things more by adding annotations directly to the plot. Now we see the dip in velocity is likely caused because the mouse is more comfortable in this test, but starts moving faster once things change again in the reversal trials. 
+
+
 ### some critiques / thoughts about graphics
 
 - from doi 10.1098/rspb.2015.2097

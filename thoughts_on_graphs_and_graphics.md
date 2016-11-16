@@ -136,27 +136,6 @@ scale_fill_world <- function(...) discrete_scale("fill", "world", palette_world,
 
 
 
-fig1e <- tribble(
-  ~day, ~genotype, ~velocity
-  "1", "wt", "15.4",
-  "2", "wt", "15.1",
-  "3", "wt", "12.7",
-  "4", "wt", "12.5",
-  "5", "wt", "10.6",
-  "6", "wt", "12.8",
-  "7", "wt", "12.6",
-  "8", "wt", "14.3",
-  "1", "scid", "15.3",
-  "2", "scid", "15.5",
-  "3", "scid", "14.3",
-  "4", "scid", "10.5",
-  "5", "scid", "10.4",
-  "6", "scid", "12.8",
-  "7", "scid", "14.2",
- "8", "scid", "15.1"
-)
-
-
 day <- rep(1:8,2)
 genotype = rep(c("wt","scid"), each = 8)
 velocity <- c(

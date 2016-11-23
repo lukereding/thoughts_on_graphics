@@ -352,12 +352,11 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
 
 
 ```{r}
-
 theme_mod <- function(font_size = 16, font_family = "", line_size = .5) {
   half_line <- 9
   small_rel <- 0.8
   small_size <- small_rel * font_size
-  
+
   theme_tufte(base_size = font_size, base_family = font_family) %+replace%
     theme(
       rect              = element_rect(fill = "transparent", colour = NA, color = NA, size = 0, linetype = 0),
@@ -384,6 +383,19 @@ theme_mod <- function(font_size = 16, font_family = "", line_size = .5) {
       legend.text       = element_text(size = rel(small_rel*0.7)),
       legend.title      = element_text(size=rel(small_rel*0.7)),
       #    legend.position   = c(-0.03, 1.05),
+      # legend.justification = c("left", "right"),
+      panel.background  = element_blank(),
+      panel.border      = element_blank(),
+      panel.grid.major  = element_blank(),
+      panel.grid.minor  = element_blank(),
+      strip.text        = element_text(size = rel(small_rel)),
+      strip.background  = element_blank(),
+      plot.background   = element_blank(),
+      plot.title        = element_text(hjust = 0,
+                                       size = font_size,
+                                       margin = ggplot2::margin(b = half_line))
+    )
+}
       # legend.justification = c("left", "right"),
       panel.background  = element_blank(),
       panel.border      = element_blank(),

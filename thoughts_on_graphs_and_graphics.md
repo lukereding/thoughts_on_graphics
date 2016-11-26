@@ -307,7 +307,7 @@ __continuous__: a variable that takes only position on the real line within some
 A really common type of plot is used to show the relationship between a categorical variable on the x-axis and a continuous variable on the y-axis. Here are some different types of plots you might use to represent that data:
 
 | plot type | information shown | in ggplot | shows the data? | shows summary? | shows sample size? |
-|:--|:--|:--|:--|:--|
+| ---- | ---- | ---- | ---- | ---- | ---- |
 | bar plot | using just means. sometimes some measure of variation (standard error or standard deviation) | `geom_bar()` or `geom_col()` | no | yes | no |
 | boxplot | five number summary (the location of each quartile + the median) + any outliter | `geom_boxplot()` | no | yes | no |
 | beeswarm | all the data points arranged to reduce overploting  | `geom_beeswarm()` in the _ggbeeswarm_ package | yes | no |

@@ -283,3 +283,98 @@ All my criticisms and the three steps traced out above could be demolished simpl
 
 ### useful papers / sites
 Nature methods has an awesome ongoing section about graphics: http://blogs.nature.com/methagora/2013/07/data-visualization-points-of-view.html lists them all.
+
+------------
+
+# choosing a plot type
+
+For complex datasets, your visualizations might benefit from taking a step back and trying to think of how the point you're trying to make could be best represented, whether or not it uses the relatively routine technique discussed below. Some of the best graphs I've seen have been innovate, new plot types that are intuitive, natural for the data the author's present, and immediately intuitive. All your plots should be like that, but sometimes all it takes is using a routine plot type.
+
+## familiarity vs. novelty
+
+I like to experiment with different plot types to create visualizations that I think are honest but intuitive. Except if the graph is sort of different from what's usually done, even if it's relatively simple, people are going to hit a roadblock and think "What am I looking at? Do I know what all the elements of the plot mean?" Even the plot is better in some way, if it's not immediately recognizable, it can become suspect. People tend to like things they immediately understand.
+
+As you experiment with different types of plots, be aware that people might not different plot types. Someone used to looking at boxplots might be confused and frustrated with confronted with a sinaplot (see below). But if we just cater to what makes people feel good inside, our visualizations won't improve and our ability to communicate and do science suffers. 
+
+### terms
+
+__categorical__: a variable that takes one of some number of values (categories).If you have a treatment and control group, these are categorical and _treatment_ is a categorical variable. Also called a _discrete_ or _qualitative_ variable.
+
+__continuous__: a variable that takes only position on the real line within some range. The miles per gallon that your car gets does not fall into categories: it's simply some number greater than zero. Also called a _quantitative_ variable. 
+
+## categorical x continuous
+
+A really common type of plot is used to show the relationship between a categorical variable on the x-axis and a continuous variable on the y-axis. Here are some different types of plots you might use to represent that data:
+
+| plot type | information shown | in ggplot | shows the data? | shows summary? | shows sample size? |
+|:--|:--|:--|:--|:--|
+| bar plot | using just means. sometimes some measure of variation (standard error or standard deviation) | `geom_bar()` or `geom_col()` | no | yes | no |
+| boxplot | five number summary (the location of each quartile + the median) + any outliter | `geom_boxplot()` | no | yes | no |
+| beeswarm | all the data points arranged to reduce overploting  | `geom_beeswarm()` in the _ggbeeswarm_ package | yes | no |
+| jitter plot | the data jittered about the x-axis |`geom_jitter()` | yes | no; can sometimes show a line for the mean | yes |
+| violin plot | smoothed density kernel of each subset of data (think smoothed histogram, corrected for differences in sample size) | `geom_violin()` | no | no | no |
+| sinaplot | the data arranged so that they form a violin-like plot | `geom_sina` in the _ggforce_ package | yes | no | yes|
+
+Usually people immediately go for a bar plot or a boxplot. Bar plots, from a data visualization standpoint, are pretty useless. They represent a single summary statistic for each your groups of data, though they do that really well: a bar is easy to see and compare with other bars. The same can't really be said for a boxplot, but a boxplot _does_ give you a sense of how the data are distributed. 
+
+Both of these plot types, while really popular, how one huge disadvantage: they don't actually show the data. This is one of the functions that a plot should do (although there are exceptions). But avoiding plotting the data, many questions don't even enter the reader's mind, like:
+
+> What are the sample sizes?     
+> The authors used a t-test, implying these data are normally distributed? Are they?      
+> Do the author have enough data to be running parametric statistics?       
+> (When looking at a bar plot): What's the variation in the data? Is it a lot or a little?
+
+
+I was struck at a seminar when someone presented some data using a jitter plot and he was immediately asked some question about the amount of variation in his data. The person asking the question would have never asked the question if the data were presented as a bar plot. Although it might be annoying for authors, plotting data and actually _showing_ the data is more honest, more transparent, and better for the scientific process.
+
+Of the other plot types, I find the violin plot the most useless. Although it gives you a good sense of the distribution of the data, it doesn't give the reader a summary statistic, or an indicator of sample size, and it doesn't show the data. 
+
+Jitter plots can be useful but suffer from over plotting. Beeswarm plots are nice, reduce overplotting, and show the data, although in the process they can make funky shapes that can be distracting to the viewer. Sinaplots compare the nice visualizaiton of a violin plot with actually showing the data, and unlike a lot of plot types, can be used with groups that vary a in their number of observations (a sinaplot with few observations just looks like a jitter or strip plot). The disadvantages of the sinaplot are: (a) too novel, (b) no summary statistic / measure of effect size. It's possible that plotting a transparent boxplot over the sinaplot might ameliroate these two conerns, but then the plot starts looking too busy. Play around with these an see what you think
+
+#### examples
+
+Here are some plots from a relatively large dataset of water striders. The categorical variable is the stream used in the experiment and the y-axis is some measure of activity. The data are available [here](http://datadryad.org/bitstream/handle/10255/dryad.131091/metadata.txt?sequence=1):
+
+bar plot:
+
+`df %>% group_by(stream) %>% summarise(avg = mean(slope.activity.nbmales, na.rm=T)) %>% ggplot(aes(factor(stream), avg)) + theme_pander() + geom_col(aes(fill = factor(stream))) + scale_fill_world(guide = F) + xlab("stream") + ylab("activity") + ggtitle("bar plot")`
+
+![bar plot](./graphs/bar_plot.pdf)
+
+
+boxplot:
+
+`df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_boxplot(aes(fill = factor(stream))) + scale_fill_world(guide = F)   + xlab("stream") + ylab("activity") + ggtitle("boxplot")`
+
+![boxplot](./graphs/boxplot.pdf)
+
+
+beeswarm
+
+
+
+violinplot
+
+`df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_violin(aes(fill = factor(stream))) + scale_fill_world(guide = F)   + xlab("stream") + ylab("activity") + ggtitle("violin plot")`
+
+![violin](./graphs/violin_plot.pdf)
+
+
+jitter
+
+`df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_jitter(height = 0, width = 0.15, aes(color = factor(stream))) + scale_color_world(guide = F)   + xlab("stream") + ylab("activity") + ggtitle("jitter plot")`
+
+![jitter plot](./graphs/jitter_plot.pdf)
+
+
+sinaplot
+
+`df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_sina(aes(color = factor(stream))) + scale_color_world(guide = F)   + xlab("stream") + ylab("activity") + ggtitle("sinaplot")`
+
+![sinaplot](./graphs/sinaplot.pdf)
+
+sinaplot + boxplot:
+
+`df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_sina(aes(color = factor(stream))) + scale_color_world(guide = F)   + xlab("stream") + ylab("activity") + ggtitle("sinaplot + boxplot") + geom_boxplot(outlier.colour = NA, alpha = 1/1000)`
+
+![sinabox](./graphs/sinabox.pdf)

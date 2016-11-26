@@ -373,3 +373,10 @@ sinaplot + line for median:
 `df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_sina(aes(color = factor(stream))) + scale_color_world(guide = F) + xlab("stream") + ylab("activity") + ggtitle("sinaplot + line for median") + stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,geom = "crossbar", width = 0.5)`
 
 ![comapre](./graphs/compare.png)
+
+
+People often use boxplots because they feel they are more informative than bar plots, which of course they are. I would argue that sinaplots are more informative than box plots, though, and avoid some of the issues of using boxplots. Take a took at these two plots, each representing the same data:
+
+![comapre2](./graphs/compare2.png)
+
+The boxplots encourage the user _not_ to think about differences in sample size (which inform our thoughts about the true magnitude of the differences in means among the groups, etc.). In showing the data, the sinaplot revels that some groups have a lot more observations than other groups, which as a reader of a scientific paper you probably want to know about.

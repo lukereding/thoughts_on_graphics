@@ -379,4 +379,4 @@ People often use boxplots because they feel they are more informative than bar p
 
 ![comapre2](./graphs/compare2.png)
 
-The boxplots encourage the user _not_ to think about differences in sample size (which inform our thoughts about the true magnitude of the differences in means among the groups, etc.). In showing the data, the sinaplot revels that some groups have a lot more observations than other groups, which as a reader of a scientific paper you probably want to know about.
+The boxplots encourage the user _not_ to think about differences in sample size (which inform our thoughts about the true magnitude of the differences in means among the groups, etc.). In showing the data, the sinaplot revels that some groups have a lot more observations than other groups, which as a reader of a scientific paper you probably want to know about. Another drawback of the boxplots is that they draw the eye to the outliers, which are arbitrarily defined and unhelpful to point out without showing them in the broader context of the data.

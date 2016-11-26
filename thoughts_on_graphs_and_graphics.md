@@ -368,4 +368,8 @@ sinaplot + boxplot:
 
 `df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_sina(aes(color = factor(stream))) + scale_color_world(guide = F)   + xlab("stream") + ylab("activity") + ggtitle("sinaplot + boxplot") + geom_boxplot(outlier.colour = NA, alpha = 1/1000)`
 
-![sinabox](./graphs/compare.png)
+sinaplot + line for median:
+
+`df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_sina(aes(color = factor(stream))) + scale_color_world(guide = F) + xlab("stream") + ylab("activity") + ggtitle("sinaplot + line for median") + stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,geom = "crossbar", width = 0.5)`
+
+![comapre](./graphs/compare.png)

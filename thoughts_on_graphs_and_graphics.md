@@ -1,36 +1,5 @@
 ## thoughts on graph and data visualization
 
-**Table of Contents** 
-
-	- [thoughts on graph and data visualization](#)
-		- [What is a good graphic? What should a graphic do?](#)
-	- [motivation: why graphs and graphics are essential](#)
-		- [guiding principles about graphics](#)
-		- [thoughts on color](#)
-			- [issues with color schemes](#)
-			- [recommendations](#)
-- [worked examples](#)
-	- [time x continuous variable](#)
-		- [step 1](#)
-		- [step 2](#)
-		- [step 3](#)
-		- [step 4](#)
-	- [continuous variable x categorical variables](#)
-		- [first pass](#)
-		- [second pass](#)
-		- [third pass](#)
-		- [forth pass](#)
-		- [fifth pass](#)
-		- [the evolution:](#)
-- [some critiques / thoughts about graphics](#)
-		- [useful papers / sites](#)
-- [choosing a plot type](#)
-	- [familiarity vs. novelty](#)
-		- [terms](#)
-	- [categorical x continuous](#)
-			- [examples](#)
-	- [categorical x categorical](#)
-
 This markdown document is my long-deferred attempt to put down on paper some principles I think are useful when creating graphics. In my experience, scientists rarely put much effort into trying to understand what they're doing when they graph something, why they're doing it, how they con do it the best, and what their goal is in creating a visual representation of data.
 
 In this document I will describe best practices for graphs and why I think they are the best practices (data on whether certain practices actually are better is thin though). Ideally, I'll include a bunch of example graphs here to illustrate good and bad practices.
@@ -61,7 +30,7 @@ As Daniel Kahneman writes about in his book _Thinking Fast and Slow_, the humans
 
 This is why graphs are so powerful and so essential.
 
-### guiding principles about graphics
+# guiding principles about graphics
 
 Below I outline guiding principles I think are important when creating a graphic.
 
@@ -75,11 +44,11 @@ Below I outline guiding principles I think are important when creating a graphic
 * state the the test used to assess statistical significance and the resulting p-value
 * don't extrapolate
 
-### thoughts on color
+## thoughts on color
 
 Color can be a powerful visualize element in a graphic. But it has to be used carefully and thoughtfully. 
 
-#### issues with color schemes
+## issues with color schemes
 
 There are three main issues that can plague a given color scheme:
 
@@ -87,11 +56,28 @@ There are three main issues that can plague a given color scheme:
 * Luminance of the colors is the same, thus hard to distinguish between colors when printed in black and white.
 * For quantitative data: changes in luminance of the colors does not scale linearly with changes in the underlying variable the color represents. For example, a change in luminance from 10% black to 30% black should represent a comparable increase in the variable that is being represented. 
 
-#### recommendations
+## recommendations
 
 It seems like there may be too many variables to optimize here, but it's possible to develop color schemes that satisfy all these criteria. One solution is the [viridis](https://bids.github.io/colormap/) color scheme and its sister color schemes (plasma, magma, and inferno). However, these may not be suitable for qualitative data and imply some sort of ordinal ranking. The [cube helix](http://blogs.nature.com/methagora/2013/07/data-visualization-points-of-view.html) color scheme is a good alternative because their are greater changes in hue. Both of these are implemented in R (using the viridis package and the cubeHelix function of the rje package). 
 
 An additional thought that really doesn't fit in here really well is that you should try to design figures so that they don't require captions. If you're using a lot of jargon and acronymns and representing things in a non-intuitive way, your reader has to head to the legend to even start to comprehend what's going on. Trying to tell a story with a graphic should obviate the need for a stuffed legend.
+
+## other general things to be aware of
+
+- **The difference between samples and populations.**
+
+This dichotomy underlies a lot of differences in plot aesthetic choices, although it's never been made explicit to me.
+
+In statistics, there are **populations** and there are **samples**. A population of interest might be the heights of all men in the US. We can't measure all the men in the US, and even if we could, we couldn't be sure we'd get every measurement just right due to measurement error and other things. The point being that populations are mythical beings: their properties (means, variances, etc.) are not just difficult to figure out, they're _unknowable_. 
+
+But _samples_ offer us little glimpses into properties of the popualtions. We take a random sample of the population (e.g. a random sample of all males in the US and measure their height) and make inferences about the population based on the sample.
+
+When we graph things, we have a choice: we can pay homage to the sample or the population. A lot of focus below in this document is on the sample, because I feel that that (a) a reader should understand the properties of the sample and (b) if a sample is crap, any inferences about the population are also crap. Either way, the reader should want to know something about your sample.
+
+That time you plotted a bar plot with a standard error, you were making an inference about a population, because a standard error is the error concerning the mythical true mean of the population you're trying to estimate. When you switched it up that one time and plotted the standard errors instead, you were honoring the sample: standard deviations are properties of the sample, not the population (e.g. a standard deviation shouldn't change in one direction as your sample size increases, while the standard error will always get smaller).
+
+Regardless of what choices you decide to make when you sit down and plot something, you should be aware of this dichotomy. You should think about whether you should be focusing on the sample or the population. Think about what a reader of your paper of an audience member at your talk would want to see.
+
 
 # worked examples
 
@@ -101,7 +87,7 @@ Let’s take a table (that somehow appeared in a _figure_ of a paper) and make i
 
 ![doi 10.1016](./graphs/table.png)
 
-Below includes are R code to recreate these figures.
+Below includes R code to recreate these figures.
 
 ### step 1
 ```r

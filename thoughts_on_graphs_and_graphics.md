@@ -1,5 +1,7 @@
 ## thoughts on graph and data visualization
 
+{{TOC}}
+
 This markdown document is my long-deferred attempt to put down on paper some principles I think are useful when creating graphics. In my experience, scientists rarely put much effort into trying to understand what they're doing when they graph something, why they're doing it, how they con do it the best, and what their goal is in creating a visual representation of data.
 
 In this document I will describe best practices for graphs and why I think they are the best practices (data on whether certain practices actually are better is thin though). Ideally, I'll include a bunch of example graphs here to illustrate good and bad practices.
@@ -390,8 +392,6 @@ ylab("activity") +
 ggtitle("sinaplot + line for median") + 
 stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,geom = "crossbar", width = 0.5)
 ```
-
-
 
 ![comapre](./graphs/compare.png)
 

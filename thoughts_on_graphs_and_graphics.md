@@ -1,7 +1,5 @@
 ## thoughts on graph and data visualization
 
-{{TOC}}
-
 This markdown document is my long-deferred attempt to put down on paper some principles I think are useful when creating graphics. In my experience, scientists rarely put much effort into trying to understand what they're doing when they graph something, why they're doing it, how they con do it the best, and what their goal is in creating a visual representation of data.
 
 In this document I will describe best practices for graphs and why I think they are the best practices (data on whether certain practices actually are better is thin though). Ideally, I'll include a bunch of example graphs here to illustrate good and bad practices.
@@ -74,7 +72,7 @@ Let’s take a table (that somehow appeared in a _figure_ of a paper) and make i
 
 Below includes are R code to recreate these figures.
 
-#### step 1
+### step 1
 ```r
 require(tidyverse)
 require(ggthemes)
@@ -181,7 +179,7 @@ Problems:
 - the box around the plot is distracting and not necessary
 - the legend is probably unnecessary
 
-#### step 2
+### step 2
 
 ```r
 step_2 <- fig1e %>%
@@ -201,7 +199,7 @@ The genotypes are now different colors, so the lines are redundantly coded (i.e.
 The grid is gone and the layout is very simple, highlighting the data. Different plotting symbols now represent data from the two groups. But the points and lines are pretty small, we still have the legend, and the points overload.
 
 
-#### step 3
+### step 3
 
 ```r
 step_3 <- fig1e %>%
@@ -221,7 +219,7 @@ step_3 <- fig1e %>%
 
 We’ve replaced the defaults with some nicer colors that can be distinguished from each other when the graph is printed in black and white. The lines are bolder and clearer and appear to take up more of the plot. The points are no longer on top of each other. The legend is gone and we’ve simply labeled each line with the correct genotype of mouse.
 
-#### step 4
+### step 4
 
 ```r
 fig1e %>%
@@ -256,7 +254,7 @@ Finally, we can improve things more by adding annotations directly to the plot. 
 
 These data are GPAs from graduating seniors from the University of Texas from different schools within UT. How to best display the relationship between school and GPA? Do some schools graduate seniors with higher / lower GPAs?
 
-## first pass
+### first pass
 
 ``` r
 first <- ut %>% 
@@ -284,7 +282,7 @@ A couple things to point out here:
 
 (2) Bar plots usually discourage critical thinking. You probably haven't thought about what the sample size that comprise each bar are, or what the distributions of GPA scores is in each bar. Yet the statistics though go into making inferences about the differences in means among the bars make certain assumptions about these quantities that you should verify for yourself. With the bar plot, you can't.
 
-## second pass
+### second pass
 
 To represent the data more honestly, let's try to boxplot:
 
@@ -318,7 +316,7 @@ This plot reveals something we haven't seen before: the sample sizes vary dramat
 
 This plot, however, tells us nothing about trends, averages, or general patterns.
 
-## forth pass 
+### forth pass 
 
 ```r
 ut %>% 
@@ -331,7 +329,7 @@ geom_sina(alpha=0.5)
 
 This is somewhat better: the sinaplot shows the distributions of the data in each school, so we get a sense of whether the data are, for example, normally distributed in each group. But we still lack the ability to easily see differences in averages among the groups.
 
-## fifth pass
+### fifth pass
 
 ````r
 ut %>% 
@@ -349,7 +347,7 @@ Now I've added red lines that denote the median of each distribution. So we see 
 
 I'm not saying this graph is perfect or couldn't still be improved, because it can. The goal is to demonstrate the process of refining graphics so that they become more useful and more honest, and to demonstrate how different types of plots encourage different types of thinking about the data.
 
-## the evolution:
+### the evolution:
 
 ![evol](./graphs/evol.png)
 

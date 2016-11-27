@@ -380,3 +380,94 @@ People often use boxplots because they feel they are more informative than bar p
 ![comapre2](./graphs/compare2.png)
 
 The boxplots encourage the user _not_ to think about differences in sample size (which inform our thoughts about the true magnitude of the differences in means among the groups, etc.). In showing the data, the sinaplot revels that some groups have a lot more observations than other groups, which as a reader of a scientific paper you probably want to know about. Another drawback of the boxplots is that they draw the eye to the outliers, which are arbitrarily defined and unhelpful to point out without showing them in the broader context of the data.
+
+
+## categorical x categorical
+
+I rarely encounter the need to plot this sort of data, but it's comes up ever now and then. There aren't very many good thoughts on how to plot this type of data and I'm still exploring the best ways of visualizing these sorts of relationships, but I'll focus on a couple I'm aware of.
+
+
+| plot type | in ggplot | shows data? | easy to identify marginal distributions? | easy to identify conditional distributions? |
+|:-----|:-----|:-----|:-----|:-----|
+| stacked bar plot | `geom_bar()` or `geom_col()` | no | yes | no |
+| jitter plot | `geom_jitter()` | yes | no | no |
+| alluvial plot | see the [ggalluvial package](https://github.com/corybrunson/ggalluvial) | no | mostly | mostly |
+
+As an example, let's say we wanted to plot this contingency table:
+
+```
+       even male-biased
+  early  315         456
+  late   291         438
+  mid    267         382
+```
+
+This is just the number of observations made during the early, middle, and late part of the day for the two treatments of the water strider study above. If we wanted to plot these data instead of using a table, how would we do it?
+
+One option would be a stacked bar plot. It would look like this:
+
+```
+stacked <- df %>% 
+filter(treatment != "NA") %>%  
+ggplot(aes(treatment)) + 
+geom_bar(aes(fill = type)) + 
+scale_fill_world() + 
+theme_pander() + 
+xlab("number of observations")
+```
+
+![stacked](./graphs/stacked.png)
+
+This isn't bad. It lets us see that there were more observations in the male-biased treatment than the even treatment, or example. But it's hard to tell whether the relative proportions of each type of measurement differ by treatment.
+
+To get a graph where the amount of space that each _type_ takes up is conditional all the number of observations in each level of _treatment_, we need to plot things a little differently; the key part is specifying `position = "fill"`:
+
+```
+df %>% 
+group_by(type, treatment) %>% 
+dplyr::count(.) %>% 
+filter(treatment != "NA") %>% 
+ggplot(aes(treatment, y = n, fill = type)) + 
+geom_bar(stat = "identity", position = "fill") +
+scale_fill_world() + 
+theme_pander() + 
+ylab("percent of observations") + 
+scale_y_continuous(labels = scales::percent_format())
+```
+
+![stacked_prop](./graphs/stacked_prop.png)
+
+Now it's clear that the proportions of observations made during each type of day doesn't really change depending on the treatment.
+
+Another option that shows the data is to jitter the number of observations at each combinations of factor treatments:
+
+
+```
+df %>% filter(treatment != "NA") %>%  ggplot(aes(x = treatment, y = type)) + geom_jitter(aes(color = type), alpha = 1/2) + scale_color_world(guide = F)
+```
+
+![jit](./graphs/jit.png)
+
+This is OK, but it's really difficult to answer questions like _Does the proportion of early observations differ between treatment?_, although you do get a sense of sample size. 
+
+
+Another way to plot these data is to use an _alluvial_ plot. The package [ggalluvial](https://github.com/corybrunson/ggalluvial) allows you to plots these types of graphs. Here's what these data look like as an alluvial plot:
+
+
+```
+# make contingency table
+df %>% group_by(type, treatment) %>% dplyr::count(.) %>% filter(treatment != "NA")
+
+ggplot(as.data.frame(con),
+        aes(weight = n,
+            axis1 = type, axis2 = treatment)) +
+geom_alluvium(aes(fill = type)) + 
+geom_stratum() + 
+geom_text(stat = "stratum") + 
+scale_fill_world(guide = F)
+
+```
+
+![jit](./graphs/alluvial.png)
+
+The width of each ribbon is proportional to the number of observations in that particular group. I like a couple things about these types of plots. First, each level of each categorical variable, you see the marginal number of observations in each category (i.e. the relative number of early, late, and mid observations). But you also see the _conditional_ proportions of each level of each variable conditioned on the other variable (e.g. you can compare the two widths of the ribbons leading away from the mid box). That said,  though you can sort of tell that the relative proportion of even/male-biased observations don't differ by _type_, the stacked bar plot is better way to explicitly show that. 

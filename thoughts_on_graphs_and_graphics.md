@@ -64,7 +64,9 @@ It seems like there may be too many variables to optimize here, but it's possibl
 
 An additional thought that really doesn't fit in here really well is that you should try to design figures so that they don't require captions. If you're using a lot of jargon and acronymns and representing things in a non-intuitive way, your reader has to head to the legend to even start to comprehend what's going on. Trying to tell a story with a graphic should obviate the need for a stuffed legend.
 
-### worked examples
+# worked examples
+
+## time x continuous variable
 
 Let’s take a table (that somehow appeared in a _figure_ of a paper) and make it into a nice plot. Here’s the original table (paper doi 10.1016/j.bbi.2007.12.008):
 
@@ -250,8 +252,108 @@ fig1e %>%
 
 Finally, we can improve things more by adding annotations directly to the plot. Now we see the dip in velocity is likely caused because the mouse is more comfortable in this test, but starts moving faster once things change again in the reversal trials. 
 
+## continuous variable x categorical variables
 
-### some critiques / thoughts about graphics
+These data are GPAs from graduating seniors from the University of Texas from different schools within UT. How to best display the relationship between school and GPA? Do some schools graduate seniors with higher / lower GPAs?
+
+## first pass
+
+``` r
+first <- ut %>% 
+group_by(School) %>% 
+dplyr::summarise(avg = mean(GPA, na.rm = T)) %>% 
+ggplot(aes(School, avg)) + 
+geom_col() + 
+theme_mod()
+```
+
+![1](./graphs/1.png)
+
+This is a really boring, in some ways dishonest graph. It's the sort of plot you might fall back on because it's easy to make and familiar. You might also change the y axis limits to make differences more apparent:
+
+
+```r
+first + coord_cartesian(ylim = c(3,3.6))
+```
+
+![2](./graphs/2.png)
+
+A couple things to point out here:
+
+(1) We dramatically changed how the viewer looks at the graph just by changing the y axis limits. In the second plot above, we see big differences in GPA between the schools; in the first plot, it looks like any differences were effectively zero in magnitude. 
+
+(2) Bar plots usually discourage critical thinking. You probably haven't thought about what the sample size that comprise each bar are, or what the distributions of GPA scores is in each bar. Yet the statistics though go into making inferences about the differences in means among the bars make certain assumptions about these quantities that you should verify for yourself. With the bar plot, you can't.
+
+## second pass
+
+To represent the data more honestly, let's try to boxplot:
+
+```r
+second <- ut %>% 
+ggplot(aes(School, GPA)) + 
+geom_boxplot() + 
+theme(axis.text.x=element_text(angle=45, hjust=1))
+```
+
+![3](./graphs/3.png)
+
+These are the same data as boxplots. I've also made the schools legible now.
+
+This is better: we now see that the variance in some schools (e.g. architecture) is a lot smaller than it is in other schools  (e.g. natural science). This might be interesting, it might not be. It depends on how many samples are in each group.
+
+### third pass 
+
+One tactic some take is to ditch the boxplot altogether and just plot the data:
+
+```r
+ut %>% 
+ggplot(aes(School, GPA)) + 
+theme(axis.text.x=element_text(angle=45, hjust=1)) + 
+geom_jitter(height = 0)
+```
+
+![4](./graphs/4.png)
+
+This plot reveals something we haven't seen before: the sample sizes vary dramatically in each group. The variance in the GPAs for the architecture school was so low simply because there were so few architecture students, and vice versa for natural sciences.
+
+This plot, however, tells us nothing about trends, averages, or general patterns.
+
+## forth pass 
+
+```r
+ut %>% 
+ggplot(aes(School, GPA)) + 
+theme(axis.text.x=element_text(angle=45, hjust=1)) + 
+geom_sina(alpha=0.5)
+```
+
+![5](./graphs/5.png)
+
+This is somewhat better: the sinaplot shows the distributions of the data in each school, so we get a sense of whether the data are, for example, normally distributed in each group. But we still lack the ability to easily see differences in averages among the groups.
+
+## fifth pass
+
+````r
+ut %>% 
+ggplot(aes(School, GPA)) + 
+theme(axis.text.x=element_text(angle=45, hjust=1)) + 
+geom_sina(alpha=0.5) + 
+stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,geom = "crossbar", width = 0.5, color = "red")
+```
+
+![6](./graphs/6.png)
+
+Now I've added red lines that denote the median of each distribution. So we see the data, the distribution of the data, and a measure of central tendency (the median).
+
+* * * 
+
+I'm not saying this graph is perfect or couldn't still be improved, because it can. The goal is to demonstrate the process of refining graphics so that they become more useful and more honest, and to demonstrate how different types of plots encourage different types of thinking about the data.
+
+## the evolution:
+
+![evol](./graphs/evol.png)
+
+# some critiques / thoughts about graphics
 
 - from doi 10.1098/rspb.2015.2097
 ![doi 10.1098/rspb.2015.2097](./graphs/10.1098:rspb.2015.1932.png)

@@ -366,11 +366,32 @@ sinaplot
 
 sinaplot + boxplot:
 
-`df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_sina(aes(color = factor(stream))) + scale_color_world(guide = F)   + xlab("stream") + ylab("activity") + ggtitle("sinaplot + boxplot") + geom_boxplot(outlier.colour = NA, alpha = 1/1000)`
+```
+df %>% 
+ggplot(aes(factor(stream), slope.activity.nbmales)) +
+ theme_pander() + 
+ geom_sina(aes(color = factor(stream))) +
+  scale_color_world(guide = F)   + 
+  xlab("stream") + ylab("activity") + 
+  ggtitle("sinaplot + boxplot") + 
+  geom_boxplot(outlier.colour = NA, alpha = 1/1000)
+```
 
 sinaplot + line for median:
 
-`df %>% ggplot(aes(factor(stream), slope.activity.nbmales)) + theme_pander() + geom_sina(aes(color = factor(stream))) + scale_color_world(guide = F) + xlab("stream") + ylab("activity") + ggtitle("sinaplot + line for median") + stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,geom = "crossbar", width = 0.5)`
+```
+df %>% 
+ggplot(aes(factor(stream), slope.activity.nbmales)) + 
+theme_pander() + 
+geom_sina(aes(color = factor(stream))) + 
+scale_color_world(guide = F) + 
+xlab("stream") + 
+ylab("activity") + 
+ggtitle("sinaplot + line for median") + 
+stat_summary(fun.y = median, fun.ymin = median, fun.ymax = median,geom = "crossbar", width = 0.5)
+```
+
+
 
 ![comapre](./graphs/compare.png)
 
@@ -443,7 +464,11 @@ Another option that shows the data is to jitter the number of observations at ea
 
 
 ```
-df %>% filter(treatment != "NA") %>%  ggplot(aes(x = treatment, y = type)) + geom_jitter(aes(color = type), alpha = 1/2) + scale_color_world(guide = F)
+df %>% 
+filter(treatment != "NA") %>% 
+ggplot(aes(x = treatment, y = type)) + 
+geom_jitter(aes(color = type), alpha = 1/2) + 
+scale_color_world(guide = F)
 ```
 
 ![jit](./graphs/jit.png)
@@ -456,7 +481,10 @@ Another way to plot these data is to use an _alluvial_ plot. The package [ggallu
 
 ```
 # make contingency table
-df %>% group_by(type, treatment) %>% dplyr::count(.) %>% filter(treatment != "NA")
+con <- df %>% 
+group_by(type, treatment) %>% 
+dplyr::count(.) %>% 
+filter(treatment != "NA")
 
 ggplot(as.data.frame(con),
         aes(weight = n,
@@ -470,4 +498,4 @@ scale_fill_world(guide = F)
 
 ![jit](./graphs/alluvial.png)
 
-The width of each ribbon is proportional to the number of observations in that particular group. I like a couple things about these types of plots. First, each level of each categorical variable, you see the marginal number of observations in each category (i.e. the relative number of early, late, and mid observations). But you also see the _conditional_ proportions of each level of each variable conditioned on the other variable (e.g. you can compare the two widths of the ribbons leading away from the mid box). That said,  though you can sort of tell that the relative proportion of even/male-biased observations don't differ by _type_, the stacked bar plot is better way to explicitly show that. 
+The width of each ribbon is proportional to the number of observations in that particular group. I like a couple things about these types of plots. First, each level of each categorical variable, you see the marginal number of observations in each category (i.e. the relative number of early, late, and mid observations). But you also see the _conditional_ proportions of each level of each variable conditioned on the other variable (e.g. you can compare the two widths of the ribbons leading away from the mid box). That said,  though you can sort of tell that the relative proportion of even/male-biased observations don't differ by _type_, the stacked bar plot is better way to explicitly show that. Another advantage of the alluvial plot is that you can add as many categorical variables as you like. I don't think this is a good idea, but it's nice to have the flexibility.

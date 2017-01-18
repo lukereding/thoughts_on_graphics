@@ -692,7 +692,7 @@ p2 <- ggplot(df, aes(thursts, precop)) +
 cowplot::plot_grid(p1, p2, labels = c("a","b"), nrow = 1)
 ```
 
-![figure](./graphs/plot10.png)
+![figure](./graphs/plot11.png)
 
 Again, this isn’t a perfect graph, but the relationships between variables become immediately obvious when using a graph instead of a table. Would we have ever noticed the positive correlation between thrusts and nips (graph b above) if we had only looked at the table? Likely not.
 

@@ -624,13 +624,13 @@ scale_fill_world(guide = F)
 The width of each ribbon is proportional to the number of observations in that particular group. I like a couple things about these types of plots. First, each level of each categorical variable, you see the marginal number of observations in each category (i.e. the relative number of early, late, and mid observations). But you also see the _conditional_ proportions of each level of each variable conditioned on the other variable (e.g. you can compare the two widths of the ribbons leading away from the mid box). That said,  though you can sort of tell that the relative proportion of even/male-biased observations don't differ by _type_, the stacked bar plot is better way to explicitly show that. Another advantage of the alluvial plot is that you can add as many categorical variables as you like. I don't think this is a good idea, but it's nice to have the flexibility.
 
 
-## table or figure?
+# table or figure?
 
 People have lots of different opinions about when to use graphs compared with tables. Tables can be useful when the specific values you report are important. Besides that, I find myself skipping over tables in papers because they usually just take too much time to process and extract whatever point the author is trying to make with the table. I often create a mini figure next to the table just to understand what the table is trying to tell me! It’s a 
 
 Let’s use the following table, from doi:10.1093/beheco/arm030 to understand (a) why tables are generally poor tools for communicating results, (b) how we can actually plot the results in the figure to make the patterns stand out.
 
-![table](./graphs/example_table.png)
+![table](./graphs/table_example.png)
 
 The tables lists a number of fish species, lengths of the fish, precopulatory behavior, copulatory attempts, and courtship behavior. For our purposes, let’s just focus on the relationship between fish species, precopulatory behavior, copulatory attempts, and courtship behavior.
 

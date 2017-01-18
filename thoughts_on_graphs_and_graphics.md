@@ -697,8 +697,16 @@ cowplot::plot_grid(p1, p2, labels = c("a","b"), nrow = 1)
 Again, this isn’t a perfect graph, but the relationships between variables become immediately obvious when using a graph instead of a table. Would we have ever noticed the positive correlation between thrusts and nips (graph b above) if we had only looked at the table? Likely not.
 
 Using a table:
-| pro | con |
-|:——|:——|
+| pro        | con           |
+| ------------- |-------------| 
+| can communicate specific numbers easily | often the specific numbers/measurements aren’t the quantity of interest |
+| many variables associated with a single observation can be represented | difficult to see relationships between variables |
+|  | difficult to see marginal distributions / ranges of variables |
+|  | difficult to grasp the point of table quickly |
+
+
+| pros        | cons           | 
+| ------------- |:-------------:| 
 | can communicate specific numbers easily | often the specific numbers/measurements aren’t the quantity of interest |
 | many variables associated with a single observation can be represented | difficult to see relationships between variables |
 |  | difficult to see marginal distributions / ranges of variables |

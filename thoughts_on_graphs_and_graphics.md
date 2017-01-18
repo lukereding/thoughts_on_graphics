@@ -622,3 +622,86 @@ scale_fill_world(guide = F)
 ![jit](./graphs/alluvial.png)
 
 The width of each ribbon is proportional to the number of observations in that particular group. I like a couple things about these types of plots. First, each level of each categorical variable, you see the marginal number of observations in each category (i.e. the relative number of early, late, and mid observations). But you also see the _conditional_ proportions of each level of each variable conditioned on the other variable (e.g. you can compare the two widths of the ribbons leading away from the mid box). That said,  though you can sort of tell that the relative proportion of even/male-biased observations don't differ by _type_, the stacked bar plot is better way to explicitly show that. Another advantage of the alluvial plot is that you can add as many categorical variables as you like. I don't think this is a good idea, but it's nice to have the flexibility.
+
+
+## table or figure?
+
+People have lots of different opinions about when to use graphs compared with tables. Tables can be useful when the specific values you report are important. Besides that, I find myself skipping over tables in papers because they usually just take too much time to process and extract whatever point the author is trying to make with the table. I often create a mini figure next to the table just to understand what the table is trying to tell me! It’s a 
+
+Let’s use the following table, from doi:10.1093/beheco/arm030 to understand (a) why tables are generally poor tools for communicating results, (b) how we can actually plot the results in the figure to make the patterns stand out.
+
+![table](./graphs/example_table.png)
+
+The tables lists a number of fish species, lengths of the fish, precopulatory behavior, copulatory attempts, and courtship behavior. For our purposes, let’s just focus on the relationship between fish species, precopulatory behavior, copulatory attempts, and courtship behavior.
+
+When you look at a figure, things immediately pop out at you: bars are different heights or the slopes of lines differ. A table is different: nothing is immediately appear when glancing at a table. It requires a lot of work on the part of the reader—a hallmark of poor communication. So our goal will be to turn this table into a graph or series of graphs. We’ll do this in R.
+
+First step is entering in the data. We can start by creating a tibble (like a data frame) with the data entered as they appear in the table:
+
+```{r}
+require(tidyverse)
+df <- tibble(species = c("sailfin molly (Lafayette)", "sailfin molly (Weslaco)", "atlantic molly", "cave molly", "mangrove molly", "guppy", "western mosquitofish", "largespring mosquitofish", "least killifish", "delicate swordtail", "variable platyfish (Zarco)", "variable platyfish (Encino)"),
+             precop = c(12.4, 8.9, 27.9, 16.7, 13.3, 4.2, 7.6, 13.3, 5.4, 2.9, 2.6, 4.8),
+             copulations = c(2, 1.2, 6, 3.8, 2.3, 2.6, 5.3, 3.5, 3.1, 1.4, 1, 5.6),
+             courtship = c(0.3, 0.3, 0, 0, 0, 3, 0, 0, 0, 3.5, 14.9, 19.3))
+```
+
+For simplicity, I’m ignoring the error associated with each measurement. 
+
+The obvious thing we want to try to visualize the relationships between the three variables. There are a bunch of different ways to do this. For example, we could plot the relationship between coercion and courtship as a scatterplot and use color or size of the points to show the number of attempted copulations. Or we could plot three graphs, each of which showing the relationship between a pair of variables. Let’s try both strategies and see which one works the best.
+
+
+```{r}
+require(ggrepel)
+ggplot(df, aes(thursts, courtship)) +
+  geom_point(aes(size = precop)) + # scale the size of the points with the number of copulations
+  geom_text_repel(aes(label = species), box.padding = unit(0.25, "lines"), point.padding = unit(1.5, "lines"), size = 3, force = 10) + # label the points with the species name
+  labs(title = "", x = "gonopodial thrusts", y = "courtship behavior") + # change the titles
+  scale_size(name = "precopulatory nips") 
+
+```
+
+![figure](./graphs/plot10.png)
+
+This graph isn’t perfect, but now just by glancing at the graph you immediately notice a couple things:    
+
+- Most of the points are at the bottom of the graph, so intense courtship is relatively rare
+- There’s lots of variation between species in numbers of gonopodial thrusts
+- The points are generally larger towards to bottom of the plot, suggesting that species with low courtship show more precopulatory nips.
+
+Often showing more than two variables in a plot can be overwhelming, especially when all the variables are continuous. A better solutions might be to make two scatterplots, each showing some relationship of interest, and combine them into a single plot using `cowplot`:
+
+```{r}
+## create the first plot
+p1 <- ggplot(df, aes(thursts, courtship)) +
+  geom_point(size = 4) + # scale the size of the points with the number of copulations
+  geom_text_repel(aes(label = species), box.padding = unit(0.25, "lines"), point.padding = unit(1.5, "lines"), size = 3, force = 10) + # label the points with the species name
+  labs(title = "relationship between courtship\nand coercion", x = "gonopodial thrusts", y = "courtship behavior") + # change the titles
+  theme(plot.title = element_text(hjust = 0, face = "plain")) + # better title styling
+  geom_smooth(se = F, color = "#00000020", span = 1) # add understated smoothed average line 
+
+## create the second plot
+p2 <- ggplot(df, aes(thursts, precop)) +
+  geom_point(size = 4) + # scale the size of the points with the number of copulations
+  geom_text_repel(aes(label = species), box.padding = unit(0.25, "lines"), point.padding = unit(1.5, "lines"), size = 3, force = 5) + # label the points with the species name
+  labs(title = "more thrusts are associated\nwith more precopulatory nips", x = "gonopodial thrusts", y = "precopulatory nips") + # change the titles
+  theme(plot.title = element_text(hjust = 0, face = "plain")) + # better title styling
+  geom_smooth(se = F, color = "#00000020", span = 1) # add understated smoothed average line 
+
+## plot both together
+cowplot::plot_grid(p1, p2, labels = c("a","b"), nrow = 1)
+```
+
+![figure](./graphs/plot10.png)
+
+Again, this isn’t a perfect graph, but the relationships between variables become immediately obvious when using a graph instead of a table. Would we have ever noticed the positive correlation between thrusts and nips (graph b above) if we had only looked at the table? Likely not.
+
+Using a table:
+| pro | con |
+|:——|:——|
+| can communicate specific numbers easily | often the specific numbers/measurements aren’t the quantity of interest |
+| many variables associated with a single observation can be represented | difficult to see relationships between variables |
+|  | difficult to see marginal distributions / ranges of variables |
+|  | difficult to grasp the point of table quickly |
+
+Visualization is as much an analytical tool to understand your data as it is a means of communicating your data to others. Hopefully this exercise shows that visualizing data with a graph is often more useful than using a table of values instead.

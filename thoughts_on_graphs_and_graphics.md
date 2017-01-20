@@ -713,3 +713,38 @@ Using a table:
 |  | difficult to grasp the point of table quickly |
 
 Visualization is as much an analytical tool to understand your data as it is a means of communicating your data to others. Hopefully this exercise shows that visualizing data with a graph is often more useful than using a table of values instead.
+
+
+# awesome R packages that aid in data visualization
+
+
+**R packages and resources of interest:**
+#### data visualization
+- [pheatmap](https://github.com/raivokolde/pheatmap) - for creating attractive heatmaps
+- [corrrplot](https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html) - for creating nice plots of correlations between variables
+- [viridis](https://cran.r-project.org/web/packages/viridis/vignettes/intro-to-viridis.html) - a nice perceptually uniform, colorblind-friendly colormap
+- [ggplot2 cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf)
+- [directlabels](http://directlabels.r-forge.r-project.org/) - for those that harbor an antipathy for unweidy legends. Automatically places labels for (1) line plots or (2) scatterplots with >2 groups.
+- [ggrepel](https://github.com/slowkow/ggrepel/blob/master/vignettes/ggrepel.md) - following a similar philosophical approach as `directlabels`, the purpose of `ggrepel` is to label the individual data points on a scatterplot with meaningly labels.
+- [ggalt](https://github.com/hrbrmstr/ggalt) - contains additional `geoms` for use in `ggplot2`. Most useful: `geom_lollipop` and `geom_dumbbell`
+- [ggthemes](https://github.com/jrnold/ggthemes) - additional useful color schemes and looks for graphs in `ggplot2`
+- [ggforce](https://cran.r-project.org/web/packages/ggforce/vignettes/Visual_Guide.html) - additional functions for using with `ggplot2`. Notably, `geom_sina()` allows the creation of sinaplots (like in Brady et al. 2015 Science) and `facet_zoom()` allows you to show a zoomed-in part of a graph. 
+- [ggally](http://ggobi.github.io/ggally/) - a collection of functions that extend `ggplot2`. Includes `ggparcoord` for plotting parallel coordinates and `ggpairs` to create nice summaries of dataframes with (equivalent of `plot(dataframe)` in base R).
+
+#### quality control
+- [visdat](https://github.com/njtierney/visdat) - for visualizing missing data in a dataframe. Run this once you have a dataframe and but _before_ you do any analysis on it.
+- [ggmissing](https://github.com/njtierney/ggmissing) - for visualizing missing data in `ggplot2`. Useful as an alternative / second step after running `vis_dat`. 
+- [wakefield](https://github.com/trinker/wakefield#demonstration) - for generating random datasets for function testing, etc.
+
+#### data wrangling
+- [dplyr & tidyr](https://rpubs.com/bradleyboehmke/data_wrangling) - for working with dataframes and making your data tidy
+- [purrr](https://github.com/hadley/purrr) - for functional programming. The `map` functions this packages provides are really powerful when paired with the `mutate` class of functions in dplyr
+- [data wrangling cheat sheet](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
+#### modeling
+- [broom](https://github.com/dgrtwo/broom) - converts model outputs to dataframes for easier manipulation and plotting with ggplot
+- [modelr](https://github.com/hadley/modelr) - useful modeling functions
+
+#### version control / repeatability
+- [packrat](http://rstudio.github.io/packrat/commands.html) - for keeping track of installed packages, and versions of those packages, for a given project
+- [R markdown cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)

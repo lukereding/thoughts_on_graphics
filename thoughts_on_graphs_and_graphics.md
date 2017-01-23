@@ -748,3 +748,7 @@ Visualization is as much an analytical tool to understand your data as it is a m
 #### version control / repeatability
 - [packrat](http://rstudio.github.io/packrat/commands.html) - for keeping track of installed packages, and versions of those packages, for a given project
 - [R markdown cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/03/rmarkdown-cheatsheet-2.0.pdf)
+
+-----------
+
+Also see the curated list [here](https://github.com/rstudio/RStartHere) from RStudio.

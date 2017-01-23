@@ -170,7 +170,35 @@ palette_world <- function(n, random_order = FALSE) {
 scale_color_world <- function(...) discrete_scale("colour", "world", palette_world, ...)
 scale_fill_world <- function(...) discrete_scale("fill", "world", palette_world, ...)
 
+ggthemr::colour_plot(palette_world(6))
 
+palette_dark <- function(n, random_order = FALSE) {
+  cols <- c("#3c2a21", "#a37c26","#a99b92","#1C4C68","#812e2c")
+  cols <- cols[c(5,4,2,1,3)]
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_dark <- function(...) discrete_scale("colour", "dark", palette_dark, ...)
+scale_fill_dark<- function(...) discrete_scale("fill", "dark", palette_dark, ...)
+
+ggthemr::colour_plot(palette_dark(6))
+
+palette_bright <- function(n, random_order = FALSE) {
+  cols <- c("#eec589", "#573a3b","#55bbb1","#3c4a68","#6399b4", "#969696")
+  cols <- cols[c(5,4,2,6,1,3)]
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_bright <- function(...) discrete_scale("colour", "bright", palette_bright, ...)
+scale_fill_bright <- function(...) discrete_scale("fill", "bright", palette_bright, ...)
+
+ggthemr::colour_plot(palette_bright(6))
 
 
 ```
@@ -240,10 +268,10 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggplot(aes(lgID, average_hr)) +
     geom_bar(stat = "identity", aes(fill = lgID)) +
     theme_minimal() +
-    ggtitle("rushmore") +
+    ggtitle("bright") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_rushmore(guide = F)
+    scale_fill_bright(guide = F)
   
   f <- batting %>%
     group_by(lgID) %>%
@@ -251,10 +279,10 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggplot(aes(lgID, average_hr)) +
     geom_bar(stat = "identity", aes(fill = lgID)) +
     theme_minimal() +
-    ggtitle("dar") +
+    ggtitle("dark") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_dar(guide = F)
+    scale_fill_dark(guide = F)
   
   g <- batting %>%
     group_by(lgID) %>%

@@ -181,6 +181,20 @@ scale_color_purples <- function (..., alpha = 1, begin = 0, end = 1, direction =
         scale_color_gradientn(colours = purples(256), ...)
 }
 ggthemr::colour_plot(purples(10))
+
+b <- c("#2A2A38", "#53395C", "#793E6E", "#A24169", "#C24456", "#E34C30", "#E47C61", "#E19F91", "#DAC2BE", "#D8DAD7", "#D2F8EF")
+br <- colorRampPalette(b)
+scale_color_brrr <- function (..., alpha = 1, begin = 0, end = 1, direction = 1) 
+{
+    if (direction == -1) {
+        tmp <- begin
+        begin <- end
+        end <- tmp
+    }
+        scale_color_gradientn(colours = br(256), ...)
+}
+ggthemr::colour_plot(br(12))
+
 ```
 
 
@@ -424,6 +438,19 @@ scale_color_blues <- function(...) discrete_scale("colour", "blues", palette_blu
 scale_fill_blues <- function(...) discrete_scale("fill", "blues", palette_blues, ...)
 ggthemr::colour_plot(palette_blues(7))
 
+
+palette_brr <- function(n, random_order = FALSE) {
+  # red, lighter purple, raspberry, orange, dark blue, orange,flesh, ice
+  cols <- c("#D84541", "#783D6D", "#B44361", "#4E3759", "#D7D9D6", "#322E41", "#E46B4A", "#D4F2EB")
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_brr <- function(...) discrete_scale("colour", "brr", palette_brr, ...)
+scale_fill_brr <- function(...) discrete_scale("fill", "brr", palette_brr, ...)
+ggthemr::colour_plot(palette_brr(8))
 ```
 
 
@@ -504,10 +531,10 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggplot(aes(lgID, average_hr)) +
     geom_bar(stat = "identity", aes(fill = lgID)) +
     theme_minimal() +
-    ggtitle("dark") +
+    ggtitle("brr") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_dark(guide = F)
+    scale_fill_brr(guide = F)
   
   g <- batting %>%
     group_by(lgID) %>%

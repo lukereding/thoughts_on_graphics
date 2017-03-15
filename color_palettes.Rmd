@@ -1,7 +1,9 @@
 ---
 title: "color palettes"
-output: 
-  html_notebook: 
+output:
+  html_document:
+    toc: yes
+  html_notebook:
     highlight: tango
     theme: readable
     toc: yes
@@ -195,6 +197,7 @@ scale_color_brrr <- function (..., alpha = 1, begin = 0, end = 1, direction = 1)
 }
 ggthemr::colour_plot(br(12))
 
+
 ```
 
 
@@ -226,20 +229,7 @@ palette_base <- function(n, random_order = FALSE) {
 }
 scale_color_base<- function(...) discrete_scale("colour", "base", palette_base, ...)
 scale_fill_base <- function(...) discrete_scale("fill", "base", palette_base, ...)
-
-
-cols <- c("#ac4142",
-          "#d28445",
-          "#f4bf75",
-          "#90a959",
-          "#75b5aa",
-          "#6a9fb5",
-          "#aa759f",
-          "#8f5536",
-          "black")
-cols <- cols[c(1,6,5,2,7,4,8,3)]
-
-ggthemr::colour_plot(cols)
+ggthemr::colour_plot(palette_base(10))
 
 
 
@@ -280,6 +270,22 @@ palette_rushmore <- function(n, random_order = FALSE) {
 scale_color_rushmore<- function(...) discrete_scale("colour", "rushmore", palette_rushmore, ...)
 scale_fill_rushmore <- function(...) discrete_scale("fill", "rushmore", palette_rushmore, ...)
 
+palette_classic <- function(n, random_order = FALSE) {
+  cols <- c("#eaab00", "#004165","#236d01", "#eacb77", "#4686aa", "#65aa46" ,"#ea5d00", "#f29354")
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  
+  cols[1:n]
+  
+}
+scale_color_classic <- function(...) discrete_scale("colour", "classic", palette_classic, ...)
+scale_fill_classic <- function(...) discrete_scale("fill", "classic", palette_classic, ...)
+ggthemr::colour_plot(palette_classic(10) )
+
+# base colors
 
 wes_palette("Zissou", 5)
 
@@ -451,6 +457,34 @@ palette_brr <- function(n, random_order = FALSE) {
 scale_color_brr <- function(...) discrete_scale("colour", "brr", palette_brr, ...)
 scale_fill_brr <- function(...) discrete_scale("fill", "brr", palette_brr, ...)
 ggthemr::colour_plot(palette_brr(8))
+
+
+palette_brew <- function(n, random_order = FALSE) {
+  cols <- c("#4C9889", "#5E3F27", "#708CB0", "#2A534D", "#FFF55E", "#313752", "#FC6C64", "#FFAF4F", "#88211C")
+  cols <- cols[c(1,2,3,4,6,8,9,7,5)]
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_brew <- function(...) discrete_scale("colour", "brew", palette_brew, ...)
+scale_fill_brew <- function(...) discrete_scale("fill", "brew", palette_brew, ...)
+ggthemr::colour_plot(palette_brew(9))
+
+
+palette_puz <- function(n, random_order = FALSE) {
+  cols <- c("#525164", "#A4C3B1", "#DB868C", "#4A6851", "#714738", "#FBDD93", "#C04839", "#D8924F","#EBA758")
+  cols <- cols[c(1,4,2,5,9,6,3,7,8)]
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_puz <- function(...) discrete_scale("colour", "puz", palette_puz, ...)
+scale_fill_puz <- function(...) discrete_scale("fill", "puz", palette_puz, ...)
+ggthemr::colour_plot(palette_puz(9))
 ```
 
 
@@ -520,10 +554,10 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggplot(aes(lgID, average_hr)) +
     geom_bar(stat = "identity", aes(fill = lgID)) +
     theme_minimal() +
-    ggtitle("bright") +
+    ggtitle("brew") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_bright(guide = F)
+    scale_fill_brew(guide = F)
   
   f <- batting %>%
     group_by(lgID) %>%
@@ -531,10 +565,10 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggplot(aes(lgID, average_hr)) +
     geom_bar(stat = "identity", aes(fill = lgID)) +
     theme_minimal() +
-    ggtitle("brr") +
+    ggtitle("puz") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_brr(guide = F)
+    scale_fill_puz(guide = F)
   
   g <- batting %>%
     group_by(lgID) %>%
@@ -564,10 +598,10 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggplot(aes(lgID, average_hr)) +
     geom_bar(stat = "identity", aes(fill = lgID)) +
     theme_minimal() +
-    ggtitle("powder") +
+    ggtitle("classic") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_powder(guide = F)
+    scale_fill_classic(guide = F)
   
   
   cowplot::plot_grid(a,b,c,d,e,f,g,h,j, labels = c("a", "b", "c", "d", "e", "f","g", "h", "j"))

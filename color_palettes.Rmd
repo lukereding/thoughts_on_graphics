@@ -233,7 +233,7 @@ ggthemr::colour_plot(palette_base(10))
 
 palette_pen <- function(n, random_order = FALSE) {
   cols <- c("#ECC543", "#D85934", "#39454B", "#8EB9C3", "#7D7D7D", "black")
-  # cols <- cols[c(2,4,1,3,5:6)]
+  cols <- cols[c(2,5,3,1,4,6)]
 
   if (isTRUE(random_order))
     cols <- sample(cols)
@@ -560,10 +560,10 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggplot(aes(lgID, average_hr)) +
     geom_bar(stat = "identity", aes(fill = lgID)) +
     theme_minimal() +
-    ggtitle("dark2") +
+    ggtitle("pen") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_brewer(palette = "Dark2", guide = F)
+    scale_fill_pen(guide = F)
   
   e <- batting %>%
     group_by(lgID) %>%

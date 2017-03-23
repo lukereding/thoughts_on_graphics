@@ -231,6 +231,23 @@ scale_color_base<- function(...) discrete_scale("colour", "base", palette_base, 
 scale_fill_base <- function(...) discrete_scale("fill", "base", palette_base, ...)
 ggthemr::colour_plot(palette_base(10))
 
+palette_pen <- function(n, random_order = FALSE) {
+  cols <- c("#ECC543", "#D85934", "#39454B", "#8EB9C3", "#7D7D7D", "black")
+  # cols <- cols[c(2,4,1,3,5:6)]
+
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  
+  cols[1:n]
+  
+}
+scale_color_pen<- function(...) discrete_scale("colour", "pen", palette_pen, ...)
+scale_fill_pen <- function(...) discrete_scale("fill", "pen", palette_pen, ...)
+ggthemr::colour_plot(palette_pen(10))
+
 
 
 

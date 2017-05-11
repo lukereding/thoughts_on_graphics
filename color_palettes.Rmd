@@ -248,6 +248,19 @@ scale_color_base<- function(...) discrete_scale("colour", "base", palette_base, 
 scale_fill_base <- function(...) discrete_scale("fill", "base", palette_base, ...)
 ggthemr::colour_plot(palette_base(10))
 
+palette_alpine <- function(n, random_order = FALSE) {
+  cols <- c("#302A5B", "#B93529","#BB6A2C","#6D7897","#5E5A6E", "#4DAF7C", "#421810")
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_alpine <- function(...) discrete_scale("colour", "alpine", palette_alpine, ...)
+scale_fill_alpine <- function(...) discrete_scale("fill", "alpine", palette_alpine, ...)
+
+
+
 palette_pen <- function(n, random_order = FALSE) {
   cols <- c("#ECC543", "#D85934", "#39454B", "#8EB9C3", "#7D7D7D", "black")
   cols <- cols[c(2,5,3,1,4,6)]
@@ -535,9 +548,9 @@ What I'm showing doesn't really matter--the goal is look at how the colors work 
 
 if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
  
-  batting <- tbl_df(Batting)
+  Batting <- tbl_df(Batting)
   
-  a <- batting %>%
+  a <- Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
@@ -549,7 +562,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ylab("average number of home runs")
   
 
-  b<- batting %>%
+  b<- Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
@@ -560,7 +573,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ylab("average number of home runs") +
     scale_fill_world(guide = F)
   
-  c<-batting %>%
+  c<-Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
@@ -571,7 +584,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ylab("average number of home runs") +
     scale_fill_cool(guide = F)
   
-  d<-batting %>%
+  d<-Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
@@ -582,7 +595,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ylab("average number of home runs") +
     scale_fill_pen(guide = F)
   
-  e <- batting %>%
+  e <- Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
@@ -593,18 +606,18 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ylab("average number of home runs") +
     scale_fill_brew(guide = F)
   
-  f <- batting %>%
+  f <- Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
     geom_bar(stat = "identity", aes(fill = lgID)) +
     theme_minimal() +
-    ggtitle("puz") +
+    ggtitle("alpine") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_puz(guide = F)
+    scale_fill_alpine(guide = F)
   
-  g <- batting %>%
+  g <- Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
@@ -615,7 +628,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ylab("average number of home runs") +
     scale_fill_blues(guide = F)
   
-  h <- batting %>%
+  h <- Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
@@ -626,7 +639,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ylab("average number of home runs") +
     ggthemes::scale_fill_ptol(guide = F)
   
-  j <- batting %>%
+  j <- Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
@@ -652,7 +665,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
 
 if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
   set.seed(11)
-  a <- batting %>% 
+  a <- Batting %>% 
     sample_n(1000) %>%
     ggplot(aes(SB, HR)) +
     geom_point(aes(color = H)) +
@@ -661,7 +674,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("viridis")
   
   set.seed(11)
-  b <- batting %>% 
+  b <- Batting %>% 
     sample_n(1000) %>%
     ggplot(aes(SB, HR)) +
     geom_point(aes(color = H)) +
@@ -670,7 +683,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("magma")
   
   set.seed(11)
-  c <- batting %>% 
+  c <- Batting %>% 
     sample_n(1000) %>%
     ggplot(aes(SB, HR)) +
     geom_point(aes(color = H)) +
@@ -679,7 +692,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("YlOrRd")
     
   set.seed(11)
-  d<-batting %>% 
+  d<-Batting %>% 
     sample_n(1000) %>%
     ggplot(aes(SB, HR)) +
     geom_point(aes(color = H)) +
@@ -688,7 +701,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("YlGnBu")
   
   set.seed(11)
-  e<-batting %>% 
+  e<-Batting %>% 
     sample_n(1000) %>%
     ggplot(aes(SB, HR)) +
     geom_point(aes(color = H)) +
@@ -697,7 +710,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("greens")
   
   set.seed(11)
-  f<-batting %>% 
+  f<-Batting %>% 
     sample_n(1000) %>%
     ggplot(aes(SB, HR)) +
     geom_point(aes(color = H)) +
@@ -706,7 +719,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("gb")
   
   set.seed(11)
-  g<-batting %>% 
+  g<-Batting %>% 
     sample_n(1000) %>%
     ggplot(aes(SB, HR)) +
     geom_point(aes(color = H)) +

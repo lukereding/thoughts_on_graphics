@@ -348,7 +348,7 @@ This is somewhat better: the sinaplot shows the distributions of the data in eac
 
 ### fifth pass
 
-````r
+```r
 ut %>% 
 ggplot(aes(School, GPA)) + 
 theme(axis.text.x=element_text(angle=45, hjust=1)) + 

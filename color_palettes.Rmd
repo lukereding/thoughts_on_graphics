@@ -260,13 +260,36 @@ scale_color_alpine <- function(...) discrete_scale("colour", "alpine", palette_a
 scale_fill_alpine <- function(...) discrete_scale("fill", "alpine", palette_alpine, ...)
 
 
+palette_pt <- function(n) {
+  cols <- c("#44AAAA", "#AA4455", "#4477AA", "#AA4488", "#44AA77", "#AA7744", "#AAAA44")
 
-palette_pen <- function(n, random_order = FALSE) {
-  cols <- c("#ECC543", "#D85934", "#39454B", "#8EB9C3", "#7D7D7D", "black")
-  cols <- cols[c(2,5,3,1,4,6)]
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  
+  cols[1:n]
+  
+}
+scale_color_pt <- function(...) discrete_scale("colour", "pt", palette_pt, ...)
+scale_fill_pt <- function(...) discrete_scale("fill", "pt", palette_pt, ...)
 
-  if (isTRUE(random_order))
-    cols <- sample(cols)
+
+palette_ds <- function(n) {
+  pal2 <- c("#ECD078", "#D95B43", "#C02942", "#542437", "#53777A")
+  pal2 <- pal2[c(3,5,2,4,1)]
+  
+  if (length(pal2) < n)
+    pal2 <- rep(pal2, length.out = n)
+  
+  pal2[1:n]
+  
+}
+scale_color_ds <- function(...) discrete_scale("colour", "ds", palette_ds, ...)
+scale_fill_ds <- function(...) discrete_scale("fill", "ds", palette_ds, ...)
+
+
+palette_lr <- function(n) {
+  cols <- c("#FFBC00", "#FF7B35", "#FF5555", "#C55981", "#8E6DA2", "#525D6B", "#2E3838", "grey50")
+  cols <- cols[c(3,6,2,7,4,1,8,5)]
   
   if (length(cols) < n)
     cols <- rep(cols, length.out = n)
@@ -274,9 +297,22 @@ palette_pen <- function(n, random_order = FALSE) {
   cols[1:n]
   
 }
-scale_color_pen<- function(...) discrete_scale("colour", "pen", palette_pen, ...)
+scale_color_lr <- function(...) discrete_scale("colour", "lr", palette_lr, ...)
+scale_fill_lr <- function(...) discrete_scale("fill", "lr", palette_lr, ...)
+
+
+palette_pen <- function(n, random_order = FALSE) {
+  cols <- c("#E84F22","#F2C500", "#37454B", "#82BAC5", "#8B8B8B", "#d36f6f")
+  # cols <- cols[c(3,2,4,1,5)]
+  cols <- cols[c(1,4,3,2,5, 6)]
+  if (isTRUE(random_order))
+    cols <- sample(cols)
+  if (length(cols) < n)
+    cols <- rep(cols, length.out = n)
+  cols[1:n]
+}
+scale_color_pen <- function(...) discrete_scale("colour", "pen", palette_pen, ...)
 scale_fill_pen <- function(...) discrete_scale("fill", "pen", palette_pen, ...)
-ggthemr::colour_plot(palette_pen(10))
 
 
 
@@ -545,7 +581,6 @@ What I'm showing doesn't really matter--the goal is look at how the colors work 
 
 ```{r fig.height=8, fig.width=8}
 
-
 if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
  
   Batting <- tbl_df(Batting)
@@ -559,7 +594,8 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     scale_fill_ras(guide = F) +
     ggtitle("ras") +
     xlab("league") +
-    ylab("average number of home runs")
+    ylab("average number of home runs")+
+    coord_flip()
   
 
   b<- Batting %>%
@@ -571,7 +607,8 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("world") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_world(guide = F)
+    scale_fill_world(guide = F) +
+    coord_flip()
   
   c<-Batting %>%
     group_by(lgID) %>%
@@ -582,7 +619,8 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("cool") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_cool(guide = F)
+    scale_fill_cool(guide = F)+
+    coord_flip()
   
   d<-Batting %>%
     group_by(lgID) %>%
@@ -593,7 +631,8 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("pen") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_pen(guide = F)
+    scale_fill_pen(guide = F)+
+    coord_flip()
   
   e <- Batting %>%
     group_by(lgID) %>%
@@ -604,7 +643,8 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("brew") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_brew(guide = F)
+    scale_fill_brew(guide = F)+
+    coord_flip()
   
   f <- Batting %>%
     group_by(lgID) %>%
@@ -615,7 +655,8 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("alpine") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_alpine(guide = F)
+    scale_fill_alpine(guide = F)+
+    coord_flip()
   
   g <- Batting %>%
     group_by(lgID) %>%
@@ -626,7 +667,8 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("blues") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_blues(guide = F)
+    scale_fill_blues(guide = F)+
+    coord_flip()
   
   h <- Batting %>%
     group_by(lgID) %>%
@@ -637,9 +679,10 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("ptol") +
     xlab("league") +
     ylab("average number of home runs") +
-    ggthemes::scale_fill_ptol(guide = F)
+    ggthemes::scale_fill_ptol(guide = F)+
+    coord_flip()
   
-  j <- Batting %>%
+  i <- Batting %>%
     group_by(lgID) %>%
     summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
     ggplot(aes(lgID, average_hr)) +
@@ -648,10 +691,47 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     ggtitle("classic") +
     xlab("league") +
     ylab("average number of home runs") +
-    scale_fill_classic(guide = F)
+    scale_fill_classic(guide = F)+
+    coord_flip()
+  
+  j <- Batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal() +
+    scale_fill_lr(guide = F) +
+    ggtitle("lr")+
+    xlab("league") +
+    ylab("average number of home runs") +
+    coord_flip()
+  
+    k <- Batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal()+
+    scale_fill_ds(guide = F) +
+    ggtitle("ds")+
+    xlab("league") +
+    ylab("average number of home runs") +
+    coord_flip()
+  
+  l <- Batting %>%
+    group_by(lgID) %>%
+    summarise(average_hr = mean(HR, na.rm = TRUE)) %>%
+    ggplot(aes(lgID, average_hr)) +
+    geom_bar(stat = "identity", aes(fill = lgID)) +
+    theme_minimal()+
+    scale_fill_pt(guide = F) +
+    ggtitle("pt")+
+    xlab("league") +
+    ylab("average number of home runs")+
+    coord_flip()
   
   
-  cowplot::plot_grid(a,b,c,d,e,f,g,h,j, labels = c("a", "b", "c", "d", "e", "f","g", "h", "j"))
+  cowplot::plot_grid(a,b,c,d,e,f,g,h,i,j,k,l, labels = c("a", "b", "c", "d", "e", "f","g", "h", "i", "j", "k","l"))
   
   
 }
@@ -660,7 +740,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
 
 ### qualitative
 
-```{r fig.height=8, fig.width=8}
+```{r fig.height=10, fig.width=10}
 # theme_set(theme_mod())
 
 if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
@@ -718,7 +798,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     scale_color_gb() +
     ggtitle("gb")
   
-  set.seed(11)
+  
   g<-Batting %>% 
     sample_n(1000) %>%
     ggplot(aes(SB, HR)) +
@@ -726,6 +806,7 @@ if (require("Lahman") && packageVersion("Lahman") >= "3.0.1") {
     theme_minimal() +
     scale_color_purples() +
     ggtitle("purples")
+  
   
   cowplot::plot_grid(a,b,c,d,e,f,g, labels = c("a", "b", "c", "d","e","f","g"), ncol = 2)
    

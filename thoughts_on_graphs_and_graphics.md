@@ -1,4 +1,4 @@
-## thoughts on graph and data visualization
+## thoughts on graphs and data visualization
 
 This markdown document is my long-deferred attempt to put down on paper some principles I think are useful when creating graphics. In my experience, scientists rarely put much effort into trying to understand what they're doing when they graph something, why they're doing it, how they con do it the best, and what their goal is in creating a visual representation of data.
 
